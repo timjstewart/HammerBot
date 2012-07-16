@@ -57,7 +57,7 @@ object Main extends App {
           delete("http://${blogHost}/blogs/120")
             .statusCodeEquals(200)),
 
-        test("Delay",
+        test("Delay Test",
           get("http://${blogHost}/blogs/delay")
             .timeOut(600)),
 
@@ -86,7 +86,7 @@ object Main extends App {
   val conf = hosts + keys
 
   val metrics = new MetricsReporter()
-  val console = new ConsoleReporter(ConsoleReporter.default)
+  val console = new ConsoleReporter(ConsoleReporter.debug)
 
   val allReporters = new CompositeReporter(metrics, console)
 

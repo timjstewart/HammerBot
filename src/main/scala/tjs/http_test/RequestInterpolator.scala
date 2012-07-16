@@ -35,7 +35,7 @@ class RequestInterpolator(
       Request(
         request.method,
         newUri.result,
-        request.headers,
+        newHeaders.result,
         newCookies.result,
         newBody),
       undefinedValues)
