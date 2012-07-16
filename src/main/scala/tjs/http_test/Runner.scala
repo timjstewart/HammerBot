@@ -12,6 +12,10 @@ import tjs.http_test.model._
 import tjs.http_test.utils._
 import tjs.http_test.reporters.{ Reporter, ConsoleReporter }
 
+case class CallResult(
+  val elapsedMilliseconds: Int,
+  val result:              Either[String, Response])
+
 private class TimeOutException(
   val allowed: Int,
   val actual: Int
@@ -68,22 +72,23 @@ class Runner(
 
       case _ => 
         reporter.requestSending(request)
-        sendRequest(request, call.timeOut) match {
+        val callResult= sendRequest(request, call.timeOut) 
+        callResult.result match {
 
-          case (elapsedTime, Right(response)) => 
-            reporter.responseReceived(request, response, elapsedTime)
+          case Right(response) => 
+            reporter.responseReceived(request, response, config, callResult.elapsedMilliseconds)
             val result = call.operations.map(op => runOperation(op, response, testConfig))
             reporter.operationsComplete()
             result
 
-          case (elapsedTime, Left(error)) => 
-            reporter.requestFailed(request, error, elapsedTime)
+          case Left(error) => 
+            reporter.requestFailed(request, error, callResult.elapsedMilliseconds)
             Seq(Failure(error))
         }
     }
   }
 
-  private def sendRequest(request: Request, timeOut: Option[Int]): Tuple2[Int, Either[String, Response]] = {
+  private def sendRequest(request: Request, timeOut: Option[Int]): CallResult = {
     val httpClient = new DefaultHttpClient()
 
     val req = request.method match {
@@ -133,7 +138,7 @@ class Runner(
       case ex => Left("Unexpected Exception: %s".format(ex.getMessage))
     }
 
-    (elapsedTime, result)
+    CallResult(elapsedTime, result)
   }
   
   private def checkTimeOut(timeOut: Option[Int], elapsedTime: Int): Unit = timeOut match {

@@ -2,7 +2,22 @@ package tjs.http_test.reporters
 
 import tjs.http_test.model._
 
-class ConsoleReporter() extends Reporter {
+object ConsoleReporter {
+  class Parameters(
+    val printOperations:  Boolean,
+    val printRequests:    Boolean,
+    val printResponses:   Boolean,
+    val printConfig:      Boolean
+  )
+
+  val default = new Parameters(true, false, false, false)
+  val quiet   = new Parameters(false, false, false, false)
+  val debug   = new Parameters(true, true, true, true)
+}
+
+class ConsoleReporter(
+  parameters: ConsoleReporter.Parameters = ConsoleReporter.default
+) extends Reporter {
 
   var level: Int = 0
   var expectationsFailed: Boolean = false
@@ -75,23 +90,38 @@ class ConsoleReporter() extends Reporter {
     }
   }
 
-  override def responseReceived(request: Request, response: Response, elapsedMillis: Int): Unit = {
+  override def responseReceived(request: Request, response: Response, config: IConfig, elapsedMillis: Int): Unit = {
     rewriteLine("Complete", "%s %s".format(request.method, request.uri), elapsedMillis)
     lastRequest = request
     lastResponse = response
     indent()
+    if (parameters.printConfig) {
+      dumpConfig(config)
+    }
+    if (parameters.printRequests) {
+      dumpRequest(request)
+    }
+    if (parameters.printResponses) {
+      dumpResponse(response)
+    }
   }
 
   override def operationStarting(operation: Operation): Unit = {
-    print("%s: %s".format(yellow("Test"), operation.description))
+    if (parameters.printOperations) {
+      print("%s: %s".format(yellow("Test"), operation.description))
+    }
   }
 
   override def operationSucceeded(operation: Operation): Unit = {
-    rewriteLine(green("Pass"), operation.description)
+    if (parameters.printOperations) {
+      rewriteLine(green("Pass"), operation.description)
+    }
   }
 
   override def operationFailed(operation: Operation, message: String): Unit = {
-    rewriteLine(red("FAIL"), message)
+    if (parameters.printOperations) {
+      rewriteLine(red("FAIL"), message)
+    }
     expectationsFailed = true
   }
 

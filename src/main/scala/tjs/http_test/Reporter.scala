@@ -12,7 +12,7 @@ trait Reporter {
   def requestSending(request: Request): Unit
   def requestNotSent(request: Request, reason: String, config: IConfig): Unit
   def requestFailed(request: Request, reason: String, elapsedMillis: Int): Unit
-  def responseReceived(request: Request, response: Response, elapsedMillis: Int): Unit
+  def responseReceived(request: Request, response: Response, config: IConfig, elapsedMillis: Int): Unit
 
   def operationStarting(operation: Operation): Unit
   def operationSucceeded(operation: Operation): Unit

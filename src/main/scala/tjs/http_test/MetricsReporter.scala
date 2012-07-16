@@ -41,7 +41,7 @@ class MetricsReporter(
   def requestFailed(request: Request, reason: String, elapsedMillis: Int): Unit = 
     callsFailed = callsFailed + 1
     
-  def responseReceived(request: Request, response: Response, elapsedMillis: Int): Unit = 
+  def responseReceived(request: Request, response: Response, config: IConfig, elapsedMillis: Int): Unit = 
     callsSucceeded = callsSucceeded + 1
 
   def operationStarting(operation: Operation): Unit = 

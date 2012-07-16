@@ -24,7 +24,7 @@ case class MutableConfig(var values: Map[String, Any]) extends IConfig {
 }
 
 object MutableConfig {
-  val empty = MutableConfig(Map[String, Any]())
+  def empty() = new MutableConfig(Map[String, Any]())
 }
 
 

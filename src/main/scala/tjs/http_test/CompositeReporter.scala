@@ -26,8 +26,8 @@ case class CompositeReporter(
   def requestFailed(request: Request, reason: String, elapsedMillis: Int): Unit = 
     reporters.foreach(r => r.requestFailed(request, reason, elapsedMillis))
     
-  def responseReceived(request: Request, response: Response, elapsedMillis: Int): Unit = 
-    reporters.foreach(r => r.responseReceived(request, response, elapsedMillis))
+  def responseReceived(request: Request, response: Response, config: IConfig, elapsedMillis: Int): Unit = 
+    reporters.foreach(r => r.responseReceived(request, response, config, elapsedMillis))
 
   def operationStarting(operation: Operation): Unit = 
     reporters.foreach(r => r.operationStarting(operation))

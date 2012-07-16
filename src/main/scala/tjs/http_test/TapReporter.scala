@@ -15,7 +15,7 @@ class TapReporter() extends Reporter {
   override def requestNotSent(request: Request, reason: String, config: IConfig): Unit = Unit
   override def requestSending(request: Request): Unit = Unit
   override def requestFailed(request: Request, reason: String, elapsedMillis: Int): Unit = Unit
-  override def responseReceived(request: Request, response: Response, elapsedMillis: Int): Unit = Unit
+  override def responseReceived(request: Request, response: Response, config: IConfig, elapsedMillis: Int): Unit = Unit
 
   override def operationStarting(operation: Operation): Unit = Unit
 

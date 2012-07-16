@@ -50,7 +50,7 @@ object Main extends App {
 
         test("Modify Blog",
           put("http://${blogHost}/blogs/120")
-            .withBody("""{blog: { id: "${user_id}", title: "Hi" } }""")
+            .withBody("""{blog: { id: 120, title: "Hi" } }""")
             .statusCodeEquals(200)),
 
         test("Delete Blog",
@@ -59,7 +59,7 @@ object Main extends App {
 
         test("Delay",
           get("http://${blogHost}/blogs/delay")
-            .timeOut(400)),
+            .timeOut(600)),
 
         test("Get Tags",
           get("http://${blogHost}/blogs")),
@@ -86,7 +86,7 @@ object Main extends App {
   val conf = hosts + keys
 
   val metrics = new MetricsReporter()
-  val console = new ConsoleReporter()
+  val console = new ConsoleReporter(ConsoleReporter.default)
 
   val allReporters = new CompositeReporter(metrics, console)
 
