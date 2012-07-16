@@ -15,9 +15,7 @@ class ConsoleReporter() extends Reporter {
   def dedent() = level = level - 1
 
   def indent(func: => Unit): Unit = {
-    indent()
-    func
-    dedent()
+    indent() ; func ; dedent()
   }
 
   def bold(text: String)   = markup(text, Console.BOLD)
@@ -25,7 +23,6 @@ class ConsoleReporter() extends Reporter {
   def green(text: String)  = markup(text, Console.GREEN)
   def yellow(text: String) = markup(text, Console.YELLOW)
   
-  // TODO: If stdout is redirected 
   def markup(text: String, escape: String) =  
     stdinRedirected match {
       case false => "%s%s%s".format(escape, text, Console.RESET)
