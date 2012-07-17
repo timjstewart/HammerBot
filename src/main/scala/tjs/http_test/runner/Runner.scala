@@ -31,8 +31,11 @@ class Runner(
     case Leaf(name, suiteConfig, tests) => runTests(name, suiteConfig, tests)
   }
 
-  def runTests(name: String, suiteConfig: Config, tests: Seq[Test]) ={
-    tests.flatMap(test => runTest(test, suiteConfig))
+  def runTests(name: String, suiteConfig: Config, tests: Seq[Test]): Seq[Result] ={
+    reporter.suiteStarting(name)
+    val result = tests.flatMap(test => runTest(test, suiteConfig))
+    reporter.suiteComplete(name)
+    result
   }
 
   def runBranch(name: String, branches: Seq[Tree]): Seq[Result] = {
@@ -83,6 +86,8 @@ class Runner(
 
           case Left(error) => 
             reporter.requestFailed(request, error, callResult.elapsedMilliseconds)
+            call.operations.foreach(op => reporter.operationSkipped(op, "Request not sent"))
+            reporter.operationsComplete()
             Seq(Failure(error))
         }
     }

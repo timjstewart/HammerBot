@@ -1,10 +1,9 @@
 package tjs.http_test.model
 
-import scala.util.matching.Regex
 import tjs.http_test._
+import scala.util.matching.Regex
 
-sealed abstract class Operation(
-  val description: String)
+sealed abstract class Operation(val description: String)
 
 sealed abstract class Expectation(
   override val description: String
