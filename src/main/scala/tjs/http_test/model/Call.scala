@@ -22,6 +22,9 @@ case class Call(
 
   // Methods that add operations to the Call object.
 
+  def withOperations(newOperations: Seq[Operation]): Call = 
+    Call(request, operations ++ newOperations, None)
+
   def bodyContains(text: String): Call = 
     Call(request, operations ++ Seq(BodyShouldContain(text)), None)
 
