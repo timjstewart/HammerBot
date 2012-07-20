@@ -9,6 +9,7 @@
 
 ## Done ##
 
+ * Make sure SSL requests work
  * Break out Console related operations out of ConsoleRunner.scala
  * Find better name for project
  * Pick a name for:

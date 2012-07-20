@@ -94,7 +94,10 @@ class Runner(
   }
 
   private def sendRequest(request: Request, timeOut: Option[Int]): CallResult = {
-    val httpClient = new DefaultHttpClient()
+    
+
+    val httpClient = allowInconsistentSslCertificates()// new DefaultHttpClient()
+
 
     val req = request.method match {
       case Get()     => new HttpGet(request.uri)
@@ -120,13 +123,14 @@ class Runner(
     var elapsedTime: Int = 0
 
     val result = try {
+
       val resp = httpClient.execute(req)
 
       elapsedTime = (System.currentTimeMillis() - startTime).toInt
 
       checkTimeOut(timeOut, elapsedTime)
 
-      val body: String = Source.fromInputStream(resp.getEntity().getContent()).getLines().mkString("\n")
+      val body: String = Source.fromInputStream(resp.getEntity().getContent(), "UTF-8").getLines().mkString("\n")
 
       httpClient.getConnectionManager().shutdown()
 
@@ -140,7 +144,7 @@ class Runner(
       case time: SocketTimeoutException => 
         elapsedTime = (System.currentTimeMillis() - startTime).toInt
         Left("Request timed out (%s msecs allowed, %s msecs taken).".format(timeOut.get, elapsedTime))
-      case ex => Left("Unexpected Exception: %s".format(ex.getMessage))
+      //case ex => Left("Unexpected Exception: %s".format(ex.getMessage))
     }
 
     CallResult(elapsedTime, result)
@@ -357,5 +361,38 @@ class Runner(
             None
         }
       }
+  }
+
+  def allowInconsistentSslCertificates(): DefaultHttpClient = {
+    import org.apache.http.conn.ssl.SSLSocketFactory
+    import org.apache.http.conn.ssl.X509HostnameVerifier
+    import org.apache.http.conn.scheme._
+    import org.apache.http.impl.conn._
+    import javax.net.ssl._ 
+    import java.security.cert._ 
+
+    val trustManager: X509TrustManager = new X509TrustManager() {
+      def checkClientTrusted(xcs: Array[X509Certificate], string: String): Unit = {
+      }
+      def checkServerTrusted(xcs: Array[X509Certificate], string: String): Unit = {
+      }
+      def getAcceptedIssuers(): Array[X509Certificate] = {
+        return null
+      }
+    }
+
+    val hostnameVerifier: HostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
+    HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
+
+    val client: DefaultHttpClient = new DefaultHttpClient()
+
+    val registry: SchemeRegistry = new SchemeRegistry()
+    val sslContext: SSLContext = SSLContext.getInstance("TLS")
+    sslContext.init(null, Array(trustManager), null)
+    val socketFactory: SSLSocketFactory = new SSLSocketFactory(sslContext, hostnameVerifier.asInstanceOf[X509HostnameVerifier])
+    registry.register(new Scheme("https", 443, socketFactory))
+    registry.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()))
+    val mgr = new PoolingClientConnectionManager(registry)
+    new DefaultHttpClient(mgr, client.getParams())
   }
 }
