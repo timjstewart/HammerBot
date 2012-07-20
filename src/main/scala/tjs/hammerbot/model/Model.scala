@@ -4,17 +4,17 @@ import scala.util.matching.Regex
 import scala.xml.{ XML, Elem }
 import com.google.gson.{ JsonElement }
 
-sealed abstract class Tree(
+sealed abstract class Suite(
   val name: String) 
 
-case class Branch(
+case class SuiteGroup(
   override val name: String,
-  val branches:      Seq[Tree]) extends Tree(name)
+  val branches:      Seq[Suite]) extends Suite(name)
 
-case class Leaf(
+case class TestGroup(
   override val name: String,
   val suiteConfig:   Config,
-  tests:             Seq[Test]) extends Tree(name)
+  tests:             Seq[Test]) extends Suite(name)
 
 case class Test(
   val name:  String,

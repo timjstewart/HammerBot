@@ -2,8 +2,6 @@
 
 ## Pending ##
 
- * Pick a name for:
-  * Tree/Branch/Suite/etc.
  * Clean up Runner.scala
  * Handle cookies
 
@@ -14,3 +12,4 @@
  * Find better name for project: HammerBot!
  * Pick a name for:
   * Assertion/Operation - I chose Operation
+  * Tree/Branch/Suite/etc. - I chose Suite/SuiteGroup/TestGroup

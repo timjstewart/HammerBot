@@ -26,9 +26,9 @@ class Runner(
   reporter: Reporter = new ConsoleReporter()
 ) {
 
-  def run(tree: Tree): Seq[Result] = tree match {
-    case Branch(name, branches)         => runBranch(name, branches)
-    case Leaf(name, suiteConfig, tests) => runTests(name, suiteConfig, tests)
+  def run(tree: Suite): Seq[Result] = tree match {
+    case SuiteGroup(name, branches)      => runSuiteGroup(name, branches)
+    case TestGroup(name, suiteConfig, tests) => runTests(name, suiteConfig, tests)
   }
 
   def runTests(name: String, suiteConfig: Config, tests: Seq[Test]): Seq[Result] ={
@@ -38,7 +38,7 @@ class Runner(
     result
   }
 
-  def runBranch(name: String, branches: Seq[Tree]): Seq[Result] = {
+  def runSuiteGroup(name: String, branches: Seq[Suite]): Seq[Result] = {
     reporter.suiteStarting(name)
     val result = branches.flatMap(run)
     reporter.suiteComplete(name)

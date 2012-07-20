@@ -4,13 +4,13 @@ import tjs.hammerbot.model._
 
 package object hammerbot {
 
-  def suite(name: String, tests: Test*): Tree = new Leaf(name, Config.empty, tests.toSeq)
+  def suite(name: String, tests: Test*): Suite = new TestGroup(name, Config.empty, tests.toSeq)
 
-  def suite(name: String, config: Config, tests: Test*): Tree = new Leaf(name, config, tests.toSeq)
+  def suite(name: String, config: Config, tests: Test*): Suite = new TestGroup(name, config, tests.toSeq)
 
   def config(config: Tuple2[String, Any]*): Config = new Config(config.toMap)
 
-  def suites(name: String, suites: Tree*): Tree = new Branch(name, suites.toSeq)
+  def suites(name: String, suites: Suite*): Suite = new SuiteGroup(name, suites.toSeq)
 
   def test(name: String, calls: Call*) = new Test(name, calls.toSeq)
 

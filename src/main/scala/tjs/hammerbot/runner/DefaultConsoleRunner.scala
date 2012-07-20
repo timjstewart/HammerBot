@@ -9,9 +9,9 @@ case class DefaultConsoleRunner(
   val metrics = new MetricsReporter()
   val console = new ConsoleReporter(ConsoleReporter.default)
 
-  def run(tree: Tree): Unit = {
+  def run(suite: Suite): Unit = {
     val runner = new Runner(config, getReporter())
-    runner.run(tree)
+    runner.run(suite)
     println(metrics.toString)
   }
 
@@ -19,3 +19,4 @@ case class DefaultConsoleRunner(
     new CompositeReporter(metrics, console)
   }
 }
+
