@@ -1,7 +1,7 @@
 package tests
 
-import tjs.http_test._
-import tjs.http_test.runner._
+import tjs.hammerbot._
+import tjs.hammerbot.runner._
 
 object Main extends App {
 

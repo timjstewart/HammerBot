@@ -1,6 +1,6 @@
 package tests
 
-import tjs.http_test._
+import tjs.hammerbot._
 
 object Blogs {
  
