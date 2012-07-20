@@ -1,6 +1,6 @@
-package tjs.http_test.reporters
+package tjs.hammerbot.reporters
 
-import tjs.http_test.model._
+import tjs.hammerbot.model._
 
 class TapReporter() extends Reporter {
 

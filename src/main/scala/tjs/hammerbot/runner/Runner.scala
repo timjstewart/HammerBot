@@ -1,4 +1,4 @@
-package tjs.http_test.runner
+package tjs.hammerbot.runner
 
 import java.net.{ UnknownHostException, ConnectException, SocketTimeoutException }
 import scala.io._
@@ -8,9 +8,9 @@ import org.apache.http.impl.client._
 import org.apache.http.client.methods.{ HttpGet, HttpPost, HttpPut, HttpOptions, HttpHead, HttpDelete }
 import org.apache.http.impl.client.BasicResponseHandler
 import org.apache.http.params.{ HttpParams, HttpConnectionParams }
-import tjs.http_test.model._
-import tjs.http_test.utils._
-import tjs.http_test.reporters.{ Reporter, ConsoleReporter }
+import tjs.hammerbot.model._
+import tjs.hammerbot.utils._
+import tjs.hammerbot.reporters.{ Reporter, ConsoleReporter }
 
 case class CallResult(
   val elapsedMilliseconds: Int,

@@ -1,4 +1,4 @@
-package tjs.http_test.runner
+package tjs.hammerbot.runner
 
 sealed abstract class Result()
 

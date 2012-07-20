@@ -1,7 +1,7 @@
-package tjs.http_test.runner
+package tjs.hammerbot.runner
 
-import tjs.http_test.model._
-import tjs.http_test.reporters._
+import tjs.hammerbot.model._
+import tjs.hammerbot.reporters._
 
 case class DefaultConsoleRunner(
   val config: IConfig

@@ -1,6 +1,6 @@
-package tjs.http_test.model
+package tjs.hammerbot.model
 
-import tjs.http_test._
+import tjs.hammerbot._
 import scala.util.matching.Regex
 
 sealed abstract class Operation(val description: String)

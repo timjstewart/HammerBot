@@ -1,4 +1,4 @@
-package tjs.http_test.utils
+package tjs.hammerbot.utils
 
 class ConsoleWriter() {
 

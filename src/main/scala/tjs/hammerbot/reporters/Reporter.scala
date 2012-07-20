@@ -1,7 +1,7 @@
-package tjs.http_test.reporters
+package tjs.hammerbot.reporters
 
 trait Reporter {
-  import tjs.http_test.model._
+  import tjs.hammerbot.model._
 
   def suiteStarting(suiteName: String): Unit
   def suiteComplete(suiteName: String): Unit

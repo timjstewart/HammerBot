@@ -1,4 +1,4 @@
-package tjs.http_test.model
+package tjs.hammerbot.model
 
 import scala.util.matching.Regex
 

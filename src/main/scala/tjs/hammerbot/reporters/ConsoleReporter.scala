@@ -1,7 +1,7 @@
-package tjs.http_test.reporters
+package tjs.hammerbot.reporters
 
-import tjs.http_test.model._
-import tjs.http_test.utils._
+import tjs.hammerbot.model._
+import tjs.hammerbot.utils._
 
 object ConsoleReporter {
   class Parameters(

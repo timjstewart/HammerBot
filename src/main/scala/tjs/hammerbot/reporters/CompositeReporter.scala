@@ -1,9 +1,9 @@
-package tjs.http_test.reporters
+package tjs.hammerbot.reporters
 
 case class CompositeReporter(
   val reporters: Reporter*
 ) extends Reporter {
-  import tjs.http_test.model._
+  import tjs.hammerbot.model._
 
   def suiteStarting(suiteName: String): Unit = 
     reporters.foreach(r => r.suiteStarting(suiteName))

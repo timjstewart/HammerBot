@@ -1,6 +1,6 @@
-package tjs.http_test.utils
+package tjs.hammerbot.utils
 
-import tjs.http_test.model._
+import tjs.hammerbot.model._
 
 class RequestInterpolator(
   val scopes: Seq[IConfig]

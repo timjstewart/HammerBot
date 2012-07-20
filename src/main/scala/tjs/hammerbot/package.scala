@@ -1,8 +1,8 @@
 package tjs
 
-import tjs.http_test.model._
+import tjs.hammerbot.model._
 
-package object http_test {
+package object hammerbot {
 
   def suite(name: String, tests: Test*): Tree = new Leaf(name, Config.empty, tests.toSeq)
 

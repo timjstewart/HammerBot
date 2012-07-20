@@ -22,5 +22,4 @@ object Main extends App {
   val conf = hosts + keys
 
   DefaultConsoleRunner(conf).run(socialSuite)
-
 }

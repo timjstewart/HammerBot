@@ -1,7 +1,7 @@
-package tjs.http_test.utils
+package tjs.hammerbot.utils
 
 import scala.util.matching.Regex
-import tjs.http_test.model._
+import tjs.hammerbot.model._
 
 case class InterpolationResult[T](
   result:          T,

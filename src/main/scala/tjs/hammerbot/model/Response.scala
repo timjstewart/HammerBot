@@ -1,4 +1,4 @@
-package tjs.http_test.model
+package tjs.hammerbot.model
 
 import scala.xml.{ XML, Elem }
 import com.google.gson.{ JsonElement, JsonSyntaxException, JsonParser  }

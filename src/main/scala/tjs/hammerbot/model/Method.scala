@@ -1,4 +1,4 @@
-package tjs.http_test.model
+package tjs.hammerbot.model
 
 sealed abstract class Method(val text: String) {
   override def toString = text
