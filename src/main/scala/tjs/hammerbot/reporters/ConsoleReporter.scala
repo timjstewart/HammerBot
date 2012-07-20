@@ -70,15 +70,16 @@ class ConsoleReporter(
     rewriteLine("Complete", "%s %s".format(request.method, request.uri), elapsedMillis)
     lastRequest = request
     lastResponse = response
-    writer.indent()
-    if (parameters.printConfig) {
-      dumpConfig(config)
-    }
-    if (parameters.printRequests) {
-      dumpRequest(request)
-    }
-    if (parameters.printResponses) {
-      dumpResponse(response)
+    writer.indent {
+      if (parameters.printConfig) {
+        dumpConfig(config)
+      }
+      if (parameters.printRequests) {
+        dumpRequest(request)
+      }
+      if (parameters.printResponses) {
+        dumpResponse(response)
+      }
     }
   }
 
@@ -108,7 +109,7 @@ class ConsoleReporter(
       writer.println("Not all expectations were met.  Dumping Request and Response...")
       dump()
     }
-    writer.dedent()
+    //writer.dedent()
   }
 
   private def dump(): Unit = {
