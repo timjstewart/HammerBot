@@ -6,6 +6,11 @@ object Tags {
 
   def getSuite() = suite("Tags", 
 
+   test("Google Test",
+     get("https://mail.google.com")
+       .timeOut(600)),
+
+
    test("Delay Test",
      get("http://${blogHost}/blogs/delay")
        .timeOut(600)),

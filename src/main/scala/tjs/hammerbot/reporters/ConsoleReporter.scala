@@ -108,6 +108,7 @@ class ConsoleReporter(
       writer.println("Not all expectations were met.  Dumping Request and Response...")
       dump()
     }
+    writer.dedent()
   }
 
   private def dump(): Unit = {

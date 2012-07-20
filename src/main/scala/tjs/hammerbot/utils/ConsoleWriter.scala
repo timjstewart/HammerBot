@@ -30,6 +30,5 @@ class ConsoleWriter() {
 
   def print(text: String): Unit = 
     Console.print("%s%s".format("  " * level, text))
-
   
 }
