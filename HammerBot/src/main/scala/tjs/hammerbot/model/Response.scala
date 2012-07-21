@@ -9,6 +9,7 @@ case class Response(
   val cookies:      Seq[Cookie],
   val body:         String
 ) extends HasHeaders with HasCookies {
+  
   lazy val asJson: Either[String,JsonElement] = 
     try {
       Right(new JsonParser().parse(body))
