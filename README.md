@@ -71,7 +71,9 @@ the service could not be contacted.
 
 * Make a GET request to a service using the value of a key.  If the key is not
   found, the test will fail:
-test("Call my service", get("http://myservice.mycompany.com/users/${user_id}")
+
+        test("Call my service", 
+          get("http://myservice.mycompany.com/users/${user_id}")
 
 ### Test Suites ###
 
