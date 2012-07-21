@@ -7,7 +7,7 @@
 Make a simple GET request to a service.  The only reason this would fail is if
 the service could not be contacted.
 
-  test("Call my service",
-    get("http://myservice.mycompany.com"))
+        test("Call my service",
+          get("http://myservice.mycompany.com"))
 
 
