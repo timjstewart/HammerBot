@@ -41,7 +41,7 @@ class Runner(
   private def allPassed(results: Seq[Result]): Boolean = {
     def passed_(result: Result): Boolean = result match {
       case Failure(_) => false
-      case Success() => true
+      case Success()  => true
     }
     results.forall(passed_)
   }

@@ -6,34 +6,6 @@ import tjs.hammerbot.model._
 import tjs.hammerbot.utils._
 
 object Operations {
-
-  private def expectHeaderContains_(op: Operation, response: Response, name: String, value: String): Result = 
-    response.lookupHeader(name) match {
-      case Some(actual) => actual.value contains value match {
-        case true => Success()
-        case false => Failure("%s but the value was %s".format(op.description, actual.value))
-      }
-      case None => Failure("%s but the header was not present".format(op.description))
-    }
-
-  private def expectHeaderMatches_(op: Operation, response: Response, name: String, regex: Regex): Result = 
-    response.lookupHeader(name) match {
-      case Some(actual) => regex.findFirstIn(actual.value) match {
-        case Some(_) => Success()
-        case none => Failure("%s but the value was %s".format(op.description, actual.value))
-      }
-      case None => Failure("%s but the header was not present".format(op.description))
-    }
-
-  private def expectHeaderEquals_(op: Operation, response: Response, expected: Header): Result = 
-    response.lookupHeader(expected.name) match {
-      case Some(actual) => expected.value == actual.value match {
-        case true => Success()
-        case false => Failure("%s but the value was %s".format(op.description, actual.value))
-      }
-      case None => Failure("%s but the header was not present".format(op.description))
-    }
-
   // TODO: Make this real
   def saveBodyMatch(op: SaveBodyMatch, response: Response, testConfig: MutableConfig): Result = 
     Success()
@@ -173,4 +145,32 @@ object Operations {
         }
       }
   }
+
+  private def expectHeaderContains_(op: Operation, response: Response, name: String, value: String): Result = 
+    response.lookupHeader(name) match {
+      case Some(actual) => actual.value contains value match {
+        case true => Success()
+        case false => Failure("%s but the value was %s".format(op.description, actual.value))
+      }
+      case None => Failure("%s but the header was not present".format(op.description))
+    }
+
+  private def expectHeaderMatches_(op: Operation, response: Response, name: String, regex: Regex): Result = 
+    response.lookupHeader(name) match {
+      case Some(actual) => regex.findFirstIn(actual.value) match {
+        case Some(_) => Success()
+        case none => Failure("%s but the value was %s".format(op.description, actual.value))
+      }
+      case None => Failure("%s but the header was not present".format(op.description))
+    }
+
+  private def expectHeaderEquals_(op: Operation, response: Response, expected: Header): Result = 
+    response.lookupHeader(expected.name) match {
+      case Some(actual) => expected.value == actual.value match {
+        case true => Success()
+        case false => Failure("%s but the value was %s".format(op.description, actual.value))
+      }
+      case None => Failure("%s but the header was not present".format(op.description))
+    }
+
 }

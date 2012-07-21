@@ -87,20 +87,23 @@ class HttpRequest(
   }
 
   private def createHttpClient(): DefaultHttpClient = {
-    val trustManager: X509TrustManager = new TrustingTrustManager()
     val hostnameVerifier: HostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
+
     HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
 
     val client: DefaultHttpClient = new DefaultHttpClient()
 
-    val registry: SchemeRegistry = new SchemeRegistry()
     val sslContext: SSLContext = SSLContext.getInstance("TLS")
-    sslContext.init(null, Array(trustManager), null)
+    sslContext.init(null, Array(new TrustingTrustManager()), null)
+
     val socketFactory: SSLSocketFactory = new SSLSocketFactory(sslContext, hostnameVerifier.asInstanceOf[X509HostnameVerifier])
+
+    val registry: SchemeRegistry = new SchemeRegistry()
+
     registry.register(new Scheme("https", 443, socketFactory))
     registry.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()))
-    val mgr = new PoolingClientConnectionManager(registry)
-    new DefaultHttpClient(mgr, client.getParams())
+
+    new DefaultHttpClient(new PoolingClientConnectionManager(registry), client.getParams())
   }
 
   private def checkTimeOut(timeOut: Option[Int], elapsedTime: Int): Unit = timeOut match {
