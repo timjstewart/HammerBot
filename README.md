@@ -1,6 +1,9 @@
 # HammerBot #
 
-''Hammer - verb. to work at constantly, to quesiton in a relentless manner.''
+An HTTP/HTTPS service testing framework.
+
+*Hammer - verb. to work at constantly, to quesiton in a relentless
+manner.*
 
 ## Examples ##
 
