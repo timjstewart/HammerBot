@@ -2,7 +2,6 @@ package tests
 
 import tjs.hammerbot._
 import tjs.hammerbot.cli._
-import tjs.hammerbot.runner._
 
 object Main extends App {
 

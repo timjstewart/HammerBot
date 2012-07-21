@@ -7,6 +7,16 @@ manner.*
 
 ## Examples ##
 
+### Common Imports ####
+
+* This is all you need to define Suites and Tests:
+
+        import tjs.hammerbot._
+
+* To actually run any tests, you'll need:
+
+        import tjs.hammerbot.cli._
+
 ### Tests ###
 
 * Make a GET request to a service.  The only reason this would fail is if
