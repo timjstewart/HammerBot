@@ -6,29 +6,27 @@ import tjs.hammerbot.model._
 import tjs.hammerbot.utils._
 
 object Operations {
-  // TODO: Make this real
-  def saveBodyMatch(op: SaveBodyMatch, response: Response, testConfig: MutableConfig): Result = 
+
+  def saveBodyMatch(op: SaveBodyMatch, response: Response, testConfig: MutableConfig): Result = {
+    op.regularExpression.findFirstIn(response.body) match {
+      case Some(value) => 
+        testConfig.put(op.key, value)
+        Success()
+      case None => Failure("% but the body is: [%s].".format(op.description, response.body))
+    }
+  }
+
+  def saveBodyContents(op: SaveBodyContents, response: Response, testConfig: MutableConfig): Result = {
+    testConfig.put(op.key, response.body)
     Success()
-
-  // TODO: Make this real
-  def saveBodyContents(op: SaveBodyContents, response: Response, testConfig: MutableConfig): Result = 
-    Success()
-
-  def expectContentTypeContains(op: ContentTypeContains, response: Response): Result = 
-    expectHeaderContains_(op, response, "Content-Type", op.contentType)
-
-  def expectContentTypeMatches(op: ContentTypeMatches, response: Response): Result = 
-    expectHeaderMatches_(op, response, "Content-Type", op.contentType)
-
-  def expectContentTypeEquals(op: ContentTypeEquals, response: Response): Result = 
-    expectHeaderEquals_(op, response, Header("Content-Type", op.contentType))
+  }
 
   def expectBodyEquals(op: BodyShouldEqual, response: Response): Result = 
     op.value == response.body match {
       case true => Success()
       case false => Failure("%s but the body is: [%s].".format(op.description, response.body))
     }
-
+    
   def expectBodyMatches(op: BodyShouldMatch, response: Response): Result = 
     op.regularExpression.findFirstIn(response.body) match {
       case Some(_) => Success()
@@ -62,6 +60,15 @@ object Operations {
 
       case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
     }
+
+  def expectContentTypeContains(op: ContentTypeContains, response: Response): Result = 
+    expectHeaderContains_(op, response, "Content-Type", op.contentType)
+
+  def expectContentTypeMatches(op: ContentTypeMatches, response: Response): Result = 
+    expectHeaderMatches_(op, response, "Content-Type", op.contentType)
+
+  def expectContentTypeEquals(op: ContentTypeEquals, response: Response): Result = 
+    expectHeaderEquals_(op, response, Header("Content-Type", op.contentType))
 
   def expectJsonPropertyEquals(op: JsonPropertyEquals, response: Response): Result = 
     response.asJson match {

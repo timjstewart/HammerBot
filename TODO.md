@@ -2,7 +2,6 @@
 
 ## Pending ##
 
- * Clean up Runner.scala
  * Handle cookies
 
 ## Done ##
@@ -13,3 +12,4 @@
  * Pick a name for:
   * Assertion/Operation - I chose Operation
   * Tree/Branch/Suite/etc. - I chose Suite/SuiteGroup/TestGroup
+ * Clean up Runner.scala
