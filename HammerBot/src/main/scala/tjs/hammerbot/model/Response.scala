@@ -20,7 +20,7 @@ case class Response(
     try {
       Right(XML.loadString(body))
     } catch {
-      case ex => Left(ex.getMessage)
+      case ex: Throwable => Left(ex.getMessage)
     }
 }
 

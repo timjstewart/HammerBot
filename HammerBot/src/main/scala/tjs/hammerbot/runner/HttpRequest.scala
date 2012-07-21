@@ -80,7 +80,7 @@ class HttpRequest(
       case time: SocketTimeoutException => 
         elapsedTime = (System.currentTimeMillis() - startTime).toInt
         Left("Request timed out (%s msecs allowed, %s msecs taken).".format(timeOut.get, elapsedTime))
-      case ex => Left("Unexpected Exception: %s".format(ex.getMessage))
+      case ex: Throwable => Left("Unexpected Exception: %s".format(ex.getMessage))
     }
 
     CallResult(elapsedTime, result)

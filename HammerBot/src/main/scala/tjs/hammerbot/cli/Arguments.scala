@@ -12,7 +12,10 @@ object Arguments {
     commandFlags: List[String], 
     result:       Arguments
   ): Either[String, Arguments] = {
-    parseFlags(commandFlags, result.withCommand(command))
+    isFlag(command) match {
+      case true => Left("No command specified")
+      case false => parseFlags(commandFlags, result.withCommand(command))
+    }
   }  
 
   private def parseFlags(

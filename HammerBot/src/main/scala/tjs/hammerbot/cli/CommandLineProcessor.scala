@@ -8,11 +8,16 @@ object CommandLineProcessor {
   def run(args: Array[String], suite: Suite, config: IConfig): Unit = {
     Arguments.parse(args) match {
       case Left(error) => println("error: %s".format(error))
-      case Right(args) => run(args, suite, config)
+      case Right(args) => println(args) ; run(args, suite, config)
     }
   }
 
-  private def run(args: Arguments, suite: Suite, config: IConfig): Unit = {
+  private def run(args: Arguments, suite: Suite, config: IConfig): Unit = args.command match {
+    case "run" => runCommand(args, suite, config)
+    case _     => println("unknown command: %s".format(args.command))
+  }
+
+  private def runCommand(args: Arguments, suite: Suite, config: IConfig): Unit = {
     val metrics = new MetricsReporter()
     val console = getReporter(args)
     val reporter = new CompositeReporter(metrics, console)

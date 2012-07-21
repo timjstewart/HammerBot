@@ -1,0 +1,9 @@
+GET     /blogs                           controllers.Blogs.getAll
+GET     /blogs/delay                     controllers.Blogs.delay
+GET     /blogs/:id                       controllers.Blogs.get(id: Int)
+DELETE  /blogs/:id                       controllers.Blogs.delete(id: Int)
+PUT     /blogs/:id                       controllers.Blogs.put(id: Int)
+POST    /blogs                           controllers.Blogs.post()
+
+GET     /users/:id                       controllers.Users.get(id: Int)
+
