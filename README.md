@@ -137,7 +137,7 @@ can be used by multiple suites:
 
 ### Running Suites ###
 
-Here is an example main method belonging to a Main object:
+* Here is an example main method belonging to a Main object:
 
         override def main(args: Array[String]): Unit = {
 
@@ -150,3 +150,11 @@ Here is an example main method belonging to a Main object:
 
           CommandLineProcessor.run(args, socialSuite, hosts)
         }
+
+* Running the sample driver from SBT:
+
+        sbt "project driver" "run run"
+
+* Running the sample driver from SBT in debug mode:
+
+        sbt "project driver" "run run -d"
