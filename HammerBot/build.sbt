@@ -1,4 +1,4 @@
-name := "HttpTest3"
+name := "HammerBot"
 
 version := "0.1"
 
