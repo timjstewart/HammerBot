@@ -50,10 +50,11 @@ object Arguments {
 
 case class Arguments(
   val command: String,
-  val debug: Boolean,
-  val names: List[String]
+  val debug:   Boolean,
+  val names:   List[String]
 ) {
   def withDebug = Arguments(command, true, names)
   def withCommand(command: String) = Arguments(command, debug, names)
   def withName(name: String) = Arguments(command, debug, names ::: List(name))
 }
+

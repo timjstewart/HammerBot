@@ -1,25 +1,29 @@
 package tests
 
 import tjs.hammerbot._
+import tjs.hammerbot.cli._
 import tjs.hammerbot.runner._
 
 object Main extends App {
 
-  val socialSuite = suites("Social", 
-    Blogs.getSuite(), 
-    Tags.getSuite())
+  override def main(args: Array[String]): Unit = {
 
-  val hosts = config(
-    "blogHost" -> "localhost:9000",
-    "tagsHost" -> "localhost:8000"
-  )
+    val socialSuite = suites("Social", 
+      Blogs.getSuite(), 
+      Tags.getSuite())
 
-  val keys = config(
-    "system_a" -> "FEEDBEEF",
-    "system_b" -> "314159"
-  )
+    val hosts = config(
+      "blogHost" -> "localhost:9000",
+      "tagsHost" -> "localhost:8000"
+    )
 
-  val conf = hosts + keys
+    val keys = config(
+      "system_a" -> "FEEDBEEF",
+      "system_b" -> "314159"
+    )
 
-  DefaultConsoleRunner(conf).run(socialSuite)
+    val conf = hosts + keys
+
+    CommandLineProcessor.run(args, socialSuite, conf)
+  }
 }
