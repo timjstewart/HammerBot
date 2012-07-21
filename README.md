@@ -4,6 +4,8 @@
 
 ## Examples ##
 
+### Tests ###
+
 * Make a GET request to a service.  The only reason this would fail is if
 the service could not be contacted.
 
@@ -56,6 +58,95 @@ the service could not be contacted.
 
 * Make a GET request to a service using the value of a key.  If the key is not
   found, the test will fail:
+test("Call my service", get("http://myservice.mycompany.com/users/${user_id}")
 
-        test("Call my service",
-          get("http://myservice.mycompany.com/users/${user_id}")
+### Test Suites ###
+
+* Create a Test Suite that contains a single test:
+
+        suite("My Test Suite",
+          test("Test One",
+            get("http://myservice.mycompany.com/users")))
+
+
+* Create a Test Suite that contains two tests:
+
+        suite("My Test Suite",
+
+          test("Test One",
+            get("http://myservice.mycompany.com/users")),
+
+          test("Test Two",
+            get("http://myservice.mycompany.com/blogs")))
+
+* Create a collection of Test Suites:
+
+        suites("My Test Suites",
+
+          suite("My First Test Suite",
+
+            test("Test One",
+              get("http://myservice.mycompany.com/users")),
+
+            test("Test Two",
+              get("http://myservice.mycompany.com/blogs")))
+
+
+          suite("My Second Suite",
+
+            test("Test Three",
+              get("http://myservice.mycompany.com/comments")),
+
+            test("Test Four",
+              get("http://myservice.mycompany.com/tags"))))
+
+
+### Configuration ###
+
+Configuration can be used to set more dynamic values in one place so that it
+can be used by multiple suites:
+
+* Create a configuration object with two key/value pairs in it:
+
+        val conf = config(
+          "secret"     -> "abcdcafe",
+          "usersHost"  -> "localhost:9000")
+
+* Create a configuration that is only used by one Suite:
+
+        suite("My Test Suite",
+
+          config(
+            "secret"     -> "abcdcafe",
+            "usersHost"  -> "localhost:9000"),
+
+          test("Test One",
+            get("http://myservice.mycompany.com/users")))
+
+* Configuration objects can be merged with the '+' operator;
+
+        val confA = config(
+          "a" -> "100",
+          "b" -> "200")
+               
+        val confB = config(
+          "c" -> "300",
+          "d" -> "400")
+
+        val allConf = confA + confB
+
+### Running Suites ###
+
+Here is an example main method belonging to a Main object:
+
+        override def main(args: Array[String]): Unit = {
+
+          val socialSuite = suites( ... )
+
+          val hosts = config(
+            "blogHost" -> "localhost:9000",
+            "tagsHost" -> "localhost:8000"
+          )
+
+          CommandLineProcessor.run(args, socialSuite, hosts)
+        }
