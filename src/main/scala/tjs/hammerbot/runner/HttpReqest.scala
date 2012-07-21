@@ -13,6 +13,11 @@ import scala.io.{ Source }
 
 import tjs.hammerbot.model._
 
+private class TimeOutException(
+  val allowed: Int,
+  val actual: Int
+) extends Throwable
+
 class TrustingTrustManager extends X509TrustManager {
   def checkClientTrusted(xcs: Array[X509Certificate], string: String): Unit = Unit
   def checkServerTrusted(xcs: Array[X509Certificate], string: String): Unit = Unit
