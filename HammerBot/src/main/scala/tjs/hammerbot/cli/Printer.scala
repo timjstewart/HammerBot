@@ -45,7 +45,7 @@ class Printer() {
   private def printSuiteGroup(suiteGroup: SuiteGroup): Unit = {
     writer.println("Suite: %s".format(suiteGroup.name))
     writer.indent {
-      suiteGroup.branches.foreach(x => print(x))
+      suiteGroup.suites.foreach(x => print(x))
     }
   }
 

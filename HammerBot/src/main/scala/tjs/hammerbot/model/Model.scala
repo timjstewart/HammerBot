@@ -9,7 +9,7 @@ sealed abstract class Suite(
 
 case class SuiteGroup(
   override val name: String,
-  val branches:      Seq[Suite]) extends Suite(name)
+  val suites:        Seq[Suite]) extends Suite(name)
 
 case class TestGroup(
   override val name: String,

@@ -12,7 +12,7 @@ class Runner(
 ) {
 
   def run(tree: Suite): Seq[Result] = tree match {
-    case SuiteGroup(name, branches)          => runSuiteGroup(name, branches)
+    case SuiteGroup(name, suites)            => runSuiteGroup(name, suites)
     case TestGroup(name, suiteConfig, tests) => runTests(name, suiteConfig, tests)
   }
 
@@ -23,9 +23,9 @@ class Runner(
     result
   }
 
-  def runSuiteGroup(name: String, branches: Seq[Suite]): Seq[Result] = {
+  def runSuiteGroup(name: String, suites: Seq[Suite]): Seq[Result] = {
     reporter.suiteStarting(name)
-    val result = branches.flatMap(run)
+    val result = suites.flatMap(run)
     reporter.suiteComplete(name)
     result
   }
