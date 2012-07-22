@@ -15,7 +15,11 @@ object CommandLineProcessor {
   private def run(args: Arguments, suite: Suite, config: IConfig = Config.empty): Unit = args.command match {
     case "run"   => runCommand(args, suite, config)
     case "print" => printCommand(args, suite)
-    case _       => println("unknown command: %s".format(args.command))
+    case _       => printHelp()
+  }
+
+  private def printHelp(): Unit = {
+    new Help().printHelp()
   }
 
   private def printCommand(args: Arguments, suite: Suite): Unit = {
