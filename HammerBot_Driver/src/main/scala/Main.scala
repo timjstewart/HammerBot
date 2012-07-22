@@ -7,7 +7,7 @@ object Main extends App {
 
   override def main(args: Array[String]): Unit = {
 
-    val socialSuite = suites("Social", 
+    val socialSuite = suites("Social Suites", 
       Blogs.getSuite(), 
       Tags.getSuite())
 
