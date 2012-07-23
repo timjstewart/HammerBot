@@ -2,6 +2,8 @@
 
 ## Pending ##
 
+ * Comments
+ * Allow custom Operation
  * Handle cookies
 
 ## Done ##

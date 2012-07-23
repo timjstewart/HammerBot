@@ -1,4 +1,4 @@
-package tjs.hammerbot.runner
+package tjs.hammerbot.model
 
 sealed abstract class Result()
 

@@ -1,4 +1,4 @@
-package tests
+package driver
 
 import tjs.hammerbot._
 
