@@ -1,4 +1,4 @@
-[[hammerbot.svg]]
+[[hammerbot.png]]
 
 # HammerBot #
 
