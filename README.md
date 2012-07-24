@@ -1,4 +1,4 @@
-[[hammerbot.png]]
+![hammerbot.png](https://github.com/timjstewart/HammerBot/blob/master/hammerbot.png)
 
 # HammerBot #
 
