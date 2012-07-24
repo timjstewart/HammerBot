@@ -1,3 +1,5 @@
+![GitHub Logo](/hammerbot.png)
+
 # HammerBot #
 
 An HTTP/HTTPS service testing framework.
