@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Hammerbot : A DSL for testing Web Services" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Hammerbot</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/timjstewart/HammerBot">View on GitHub</a>
+
+          <h1 id="project_title">Hammerbot</h1>
+          <h2 id="project_tagline">A DSL for testing Web Services</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/timjstewart/HammerBot/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/timjstewart/HammerBot/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>HammerBot</h1>
+
+<p>An HTTP/HTTPS service testing framework.</p>
+
+<p><em>Hammer - verb. to work at constantly, to quesiton in a relentless
+manner.</em></p>
+
+<h2>Examples</h2>
+
+<h3>Common Imports</h3>
+
+<ul>
+<li>
+<p>This is all you need to define Suites and Tests:</p>
+
+<pre><code>import tjs.hammerbot._
+</code></pre>
+</li>
+<li>
+<p>To actually run any tests, you'll need:</p>
+
+<pre><code>import tjs.hammerbot.cli._
+</code></pre>
+</li>
+</ul><h3>Tests</h3>
+
+<ul>
+<li>
+<p>Make a GET request to a service.  The only reason this would fail is if
+the service could not be contacted.</p>
+
+<pre><code>test("Call my service",
+  get("http://myservice.mycompany.com"))
+</code></pre>
+</li>
+<li>
+<p>Make a GET request to a service and ensure that the status code is
+200:</p>
+
+<pre><code>test("Call my service",
+  get("http://myservice.mycompany.com")
+    .statusCodeEquals(200))
+</code></pre>
+</li>
+<li>
+<p>Make a GET request to a service and ensure that the status code is
+between 400 and 403:</p>
+
+<pre><code>test("Call my service",
+  get("http://myservice.mycompany.com")
+    .statusCodeIsInRange(400, 403))
+</code></pre>
+</li>
+<li>
+<p>Make a GET request to a service and ensure that the content type is
+exactly "application/json":</p>
+
+<pre><code>test("Call my service",
+  get("http://myservice.mycompany.com")
+    .contentTypeIs("application/json"))
+</code></pre>
+</li>
+<li>
+<p>Make a GET request to a service and ensure that the content type
+contains "application/json" (useful for services that contain the character
+encoding too):</p>
+
+<pre><code>test("Call my service",
+  get("http://myservice.mycompany.com")
+    .contentTypeContains("application/json"))
+</code></pre>
+</li>
+<li>
+<p>Make a GET request to a service and ensure that the response body
+contains a JSON property with a specific value:</p>
+
+<pre><code>test("Call my service",
+  get("http://myservice.mycompany.com")
+    .jsonPropertyEquals("user/id", 12345))
+</code></pre>
+</li>
+<li>
+<p>Make a GET request to a service and save a JSON property under a specific
+key:</p>
+
+<pre><code>test("Call my service",
+  get("http://myservice.mycompany.com")
+    .saveJsonProperty("user/id", "user_id"))
+</code></pre>
+</li>
+<li>
+<p>Make a GET request to a service using the value of a key.  If the key is not
+found, the test will fail:</p>
+
+<pre><code>test("Call my service", 
+  get("http://myservice.mycompany.com/users/${user_id}")
+</code></pre>
+</li>
+</ul><h3>Test Suites</h3>
+
+<ul>
+<li>
+<p>Create a Test Suite that contains a single test:</p>
+
+<pre><code>suite("My Test Suite",
+  test("Test One",
+    get("http://myservice.mycompany.com/users")))
+</code></pre>
+</li>
+<li>
+<p>Create a Test Suite that contains two tests:</p>
+
+<pre><code>suite("My Test Suite",
+
+  test("Test One",
+    get("http://myservice.mycompany.com/users")),
+
+  test("Test Two",
+    get("http://myservice.mycompany.com/blogs")))
+</code></pre>
+</li>
+<li>
+<p>Create a collection of Test Suites:</p>
+
+<pre><code>suites("My Test Suites",
+
+  suite("My First Test Suite",
+
+    test("Test One",
+      get("http://myservice.mycompany.com/users")),
+
+    test("Test Two",
+      get("http://myservice.mycompany.com/blogs")))
+
+  suite("My Second Suite",
+
+    test("Test Three",
+      get("http://myservice.mycompany.com/comments")),
+
+    test("Test Four",
+      get("http://myservice.mycompany.com/tags"))))
+</code></pre>
+</li>
+</ul><h3>Configuration</h3>
+
+<p>Configuration can be used to set more dynamic values in one place so that it
+can be used by multiple suites:</p>
+
+<ul>
+<li>
+<p>Create a configuration object with two key/value pairs in it:</p>
+
+<pre><code>val conf = config(
+  "secret"     -&gt; "abcdcafe",
+  "usersHost"  -&gt; "localhost:9000")
+</code></pre>
+</li>
+<li>
+<p>Create a configuration that is only used by one Suite:</p>
+
+<pre><code>suite("My Test Suite",
+
+  config(
+    "secret"     -&gt; "abcdcafe",
+    "usersHost"  -&gt; "localhost:9000"),
+
+  test("Test One",
+    get("http://myservice.mycompany.com/users")))
+</code></pre>
+</li>
+<li>
+<p>Configuration objects can be merged with the '+' operator;</p>
+
+<pre><code>val confA = config(
+  "a" -&gt; "100",
+  "b" -&gt; "200")
+
+val confB = config(
+  "c" -&gt; "300",
+  "d" -&gt; "400")
+
+val allConf = confA + confB
+</code></pre>
+</li>
+</ul><h3>Running Suites</h3>
+
+<ul>
+<li>
+<p>Here is an example main method belonging to a Main object:</p>
+
+<pre><code>override def main(args: Array[String]): Unit = {
+
+  val socialSuite = suites( ... )
+
+  val hosts = config(
+    "blogHost" -&gt; "localhost:9000",
+    "tagsHost" -&gt; "localhost:8000"
+  )
+
+  CommandLineProcessor.run(args, socialSuite, hosts)
+}
+</code></pre>
+</li>
+<li>
+<p>Running the sample driver from SBT:</p>
+
+<pre><code>sbt "project driver" "run run"
+</code></pre>
+</li>
+<li>
+<p>Running the sample driver from SBT in debug mode:</p>
+
+<pre><code>sbt "project driver" "run run -d"
+</code></pre>
+</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Hammerbot maintained by <a href="https://github.com/timjstewart">timjstewart</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
