@@ -9,5 +9,6 @@ class Help() {
     println("    help      prints this helpful text")
     println("Flags:")
     println("    -d        print out debug information")
+    println("    -v        print version information")
   }
 }

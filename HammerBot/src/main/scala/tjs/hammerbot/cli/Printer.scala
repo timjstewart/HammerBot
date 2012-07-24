@@ -4,7 +4,9 @@ import tjs.hammerbot.model._
 import tjs.hammerbot.utils._
 
 /** Prints a hierarchy of tests and test suites */
-class Printer() {
+class Printer(
+  val debug: Boolean
+) {
 
   /** the ConsoleWriter used to print the structure of the
     * suite. 
@@ -25,6 +27,23 @@ class Printer() {
   /** prints a Test */
   private def printTest(test: Test): Unit = {
     writer.println("Test: %s".format(test.name))
+    printCalls(test.calls)
+  }
+
+  private def printCalls(calls: Seq[Call]): Unit = {
+    writer.indent {
+      calls.foreach {
+        call => 
+          writer.println("Call: %s %s".format(call.request.method, call.request.uri))
+          if (debug) printOperations(call.operations)
+      }
+    }
+  }
+
+  private def printOperations(operations: Seq[Operation]): Unit = {
+    writer.indent {
+      operations.foreach(operation => writer.println("Operation: %s".format(operation.description)))
+    }
   }
 
   /** prints a TestGroup and all of its nested Test objects.

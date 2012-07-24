@@ -2,21 +2,27 @@ package tjs.hammerbot.cli
 
 object Arguments {
 
-  def parse(args: Array[String]): Either[String, Arguments] = args.toList match {
-    case arg :: rest => parseCommand(arg, rest, Arguments.empty)
-    case _           => Right(Arguments.empty) 
-  }
+  def parse(args: Array[String]): Either[String, Arguments] = 
+    parseCommand(args.toList, Arguments.empty)
 
   private def parseCommand(
-    command:      String, 
-    commandFlags: List[String], 
-    result:       Arguments
-  ): Either[String, Arguments] = {
-    isFlag(command) match {
-      case true => Left("No command specified")
-      case false => parseFlags(commandFlags, result.withCommand(command))
+    args:    List[String], 
+    result:  Arguments
+  ): Either[String, Arguments] = args match {
+    case command :: rest => isFlag(command) match {
+      case true => flagRequiresCommand(command) match {
+        case true  => Left("No command specified")
+        case false => parseFlags(args, result)
+      }
+      case false => parseFlags(rest, result.withCommand(command))
     }
+    case _ => Right(Arguments.empty)
   }  
+
+  private def flagRequiresCommand(flag: String): Boolean = flag match {
+    case "-v" => false
+    case _    => true
+  }
 
   private def parseFlags(
     commandFlags: List[String], 
@@ -37,6 +43,7 @@ object Arguments {
     result:       Arguments
   ): Either[String, Arguments] = flag match {
     case "-d" => parseFlags(commandFlags, result.withDebug)
+    case "-v" => Right(Arguments("version", false, List()))
     case _    => Left("Unrecognized flag: %s".format(flag))
   }
 

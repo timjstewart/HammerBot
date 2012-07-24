@@ -13,9 +13,14 @@ object CommandLineProcessor {
   }
 
   private def run(args: Arguments, suite: Suite, config: IConfig = Config.empty): Unit = args.command match {
-    case "run"   => runCommand(args, suite, config)
-    case "print" => printCommand(args, suite)
-    case _       => printHelp()
+    case "run"     => runCommand(args, suite, config)
+    case "print"   => printCommand(args, suite)
+    case "version" => versionCommand()
+    case _         => printHelp()
+  }
+
+  private def versionCommand(): Unit = {
+    println("HammerBot v%s".format("0.1"))
   }
 
   private def printHelp(): Unit = {
@@ -23,7 +28,7 @@ object CommandLineProcessor {
   }
 
   private def printCommand(args: Arguments, suite: Suite): Unit = {
-    new Printer().print(suite)
+    new Printer(args.debug).print(suite)
   }
 
   private def runCommand(args: Arguments, suite: Suite, config: IConfig): Unit = {
