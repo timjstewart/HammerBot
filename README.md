@@ -1,3 +1,5 @@
+[[hammerbot.svg]]
+
 # HammerBot #
 
 An HTTP/HTTPS service testing framework.
