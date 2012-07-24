@@ -3,7 +3,6 @@
 ## Pending ##
 
  * Comments
- * Allow custom Operation
  * Handle cookies
 
 ## Done ##
@@ -15,3 +14,4 @@
   * Assertion/Operation - I chose Operation
   * Tree/Branch/Suite/etc. - I chose Suite/SuiteGroup/TestGroup
  * Clean up Runner.scala
+ * Allow custom Operation
