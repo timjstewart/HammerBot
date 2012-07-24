@@ -1,5 +1,3 @@
-![hammerbot.png](http://github.com/timjstewart/HammerBot/blob/master/hammerbot.png)
-
 # HammerBot #
 
 An HTTP/HTTPS service testing framework.
