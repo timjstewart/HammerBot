@@ -99,7 +99,11 @@ case class SaveJsonPropertyMatching(
   val key:               String
 ) extends Operation("Save JSON property: %s matching: %s under key: %s".format(propertyPath, regularExpression))
 
-case class Custom(
-  override val description: String,
-  val func:                 (Response, IConfig) => Result
-) extends Operation(description)
+trait CustomOperation {
+  def description: String
+  def apply(response: Response, config: IConfig): Result
+}
+
+case class CustomOperationHolder(
+  custom: CustomOperation
+) extends Operation(custom.description) 

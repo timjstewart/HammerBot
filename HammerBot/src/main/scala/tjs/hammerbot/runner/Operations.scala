@@ -114,8 +114,7 @@ object Operations {
     else
       Failure("%s but was: %s".format(op.description, response.statusCode))
 
-  def runCustom(op: Custom, response: Response, config: IConfig): Result = 
-     op.func(response, config)
+  def runCustom(op: CustomOperationHolder, response: Response, config: IConfig): Result = op.custom(response, config)
 
   private def findProperty(response: Response, path: String): Either[String, String] = {
     response.asJson match {

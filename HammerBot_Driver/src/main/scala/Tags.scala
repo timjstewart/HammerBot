@@ -4,11 +4,15 @@ import tjs.hammerbot._
 import tjs.hammerbot.model._
 
 object Tags {
-  def headerCountEquals(n: Int)(response: Response, config: IConfig): Result = {
-    if (response.headers.length == n)
-      Success()
-    else 
-      Failure("Header Count was wrong")
+
+  case class HeaderCountEquals(n: Int) extends CustomOperation {
+    def description = "Header Count should equal: %d".format(n)
+    def apply(response: Response, config: IConfig): Result = {
+      if (response.headers.length == n)
+        Success()
+      else 
+        Failure("%s but it was %d.".format(description, response.headers.length))
+    }
   }
 
   def getSuite() = suite("Tags Tests", 
@@ -20,7 +24,7 @@ object Tags {
    test("Delay Test",
      get("http://${blogHost}/blogs/delay")
        .timeOut(600)
-       .withCustom("Header count should be 3", headerCountEquals(3))
+       .withCustom(HeaderCountEquals(2))
        .saveBody("foo")),
 
 

@@ -114,7 +114,7 @@ class Runner(
      case op@SaveBodyMatch(_,_)       => saveBodyMatch(op, response, testConfig)
      case op@SaveJsonProperty(_,_)    => saveJsonProperty(op, response, testConfig)
 
-     case op@Custom(_,_)              => runCustom(op, response, testConfig)
+     case op@CustomOperationHolder(_) => runCustom(op, response, testConfig)
 
      case op                          => Failure("Unknown Operation")
     }

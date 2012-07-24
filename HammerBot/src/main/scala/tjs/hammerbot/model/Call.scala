@@ -70,8 +70,8 @@ case class Call(
   def saveJsonProperty(path: String, key: String): Call = 
     Call(request, operations ++ Seq(SaveJsonProperty(path, key)), None)
 
-  def withCustom(description: String, func: (Response, IConfig) => Result): Call = 
-    Call(request, operations ++ Seq(Custom(description, func)), None)
+  def withCustom(op: CustomOperation): Call = 
+    Call(request, operations ++ Seq(new CustomOperationHolder(op)), None)
 
   def expect(func: Call => Call) = func(this)
 }
