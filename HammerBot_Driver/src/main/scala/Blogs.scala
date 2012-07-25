@@ -7,8 +7,8 @@ object Blogs {
  def getSuite() = suite("Blog Tests", 
 
   config(
-    "secret"     -> "abcdcafe",
-    "usersHost"  -> "localhost:9000"),
+    "secret"    -> "abcdcafe",
+    "usersHost" -> "localhost:9000"),
 
 
   test("Retrieve Blog Test",
@@ -20,6 +20,7 @@ object Blogs {
         .statusCodeEquals(200)
         .contentTypeContains("application/json")
         .jsonPropertyEquals("blogs/count", 120)
+        .jsonPropertyDoesNotEqual("blogs/count", 121)
       },
 
     get("http://${blogHost}/blogs/32")
@@ -43,17 +44,23 @@ object Blogs {
       .withBody("""{blog: { title: "Hi" } }""")
       .expect { _
         .statusCodeEquals(201)
+        .statusCodeDoesNotEqual(200)
       }),
 
 
   test("Modify Blog",
     put("http://${blogHost}/blogs/120")
       .withBody("""{blog: { id: 120, title: "Hi" } }""")
-      .statusCodeEquals(200)),
+      .expect { _
+        .bodyDoesNotContain("blorg")
+        .bodyDoesNotEqual("""{ blog: { id: 120, user_id: 20902 } }!""")
+        .statusCodeEquals(200)
+      }),
 
 
   test("Delete Blog",
     delete("http://${blogHost}/blogs/120")
+      .statusCodeIsNotInRange(201, 300)
       .statusCodeEquals(200)))
  
 }

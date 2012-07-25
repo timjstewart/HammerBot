@@ -19,7 +19,11 @@ object Tags {
 
    test("Google Test",
      get("https://mail.google.com/mail")
+      .headerEquals("Pragma", "no-cache")
+      .headerDoesNotEqual("Pragma", "cache")
+      .bodyDoesNotContain("HotMail")
       .bodyContains("SetGmailCookie")), 
+
 
    test("Delay Test",
      get("http://${blogHost}/blogs/delay")
@@ -30,6 +34,7 @@ object Tags {
 
    test("Get Tags",
      get("http://${blogHost}/blogs")
+      .statusCodeDoesNotEqual(201)
       .statusCodeEquals(200)),
 
 

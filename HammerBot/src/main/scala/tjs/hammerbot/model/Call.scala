@@ -28,8 +28,11 @@ case class Call(
   def bodyContains(text: String): Call = 
     Call(request, operations ++ Seq(BodyShouldContain(text)), None)
 
-  def bodyMatches(regEx: Regex): Call = 
-    Call(request, operations ++ Seq(BodyShouldMatch(regEx)), None)
+  def bodyDoesNotContain(text: String): Call = 
+    Call(request, operations ++ Seq(BodyShouldNotContain(text)), None)
+
+  def bodyDoesNotMatch(regEx: Regex): Call = 
+    Call(request, operations ++ Seq(BodyShouldNotMatch(regEx)), None)
 
   def contentTypeIs(contentType: String): Call = 
     Call(request, operations ++ Seq(ContentTypeEquals(contentType)), None)
@@ -43,23 +46,35 @@ case class Call(
   def jsonPropertyEquals(path: String, value: Any): Call = 
     Call(request, operations ++ Seq(JsonPropertyEquals(path, value)), None)
 
+  def jsonPropertyDoesNotEqual(path: String, value: Any): Call = 
+    Call(request, operations ++ Seq(JsonPropertyDoesNotEqual(path, value)), None)
+
   def statusCodeEquals(n: Int): Call = 
     Call(request, operations ++ Seq(StatusCodeEquals(n)), None)
 
-  def statusCodeIsInRange(low: Int, high: Int): Call = 
-    Call(request, operations ++ Seq(StatusCodeIsInRange(low, high)), None)
+  def statusCodeDoesNotEqual(n: Int): Call = 
+    Call(request, operations ++ Seq(StatusCodeDoesNotEqual(n)), None)
+
+  def statusCodeIsNotInRange(low: Int, high: Int): Call = 
+    Call(request, operations ++ Seq(StatusCodeIsNotInRange(low, high)), None)
 
   def headerEquals(name: String, value: String): Call = 
     Call(request, operations ++ Seq(HeaderEquals(Header(name, value))), None)
 
-  def cookieExists(name: String): Call = 
-    Call(request, operations ++ Seq(CookieIsPresent(name)), None)
+  def headerDoesNotEqual(name: String, value: String): Call = 
+    Call(request, operations ++ Seq(HeaderDoesNotEqual(Header(name, value))), None)
 
-  def cookieEquals(name: String, value: String): Call = 
-    Call(request, operations ++ Seq(CookieHasValue(name, value)), None)
+  def cookieDoesNotExist(name: String): Call = 
+    Call(request, operations ++ Seq(CookieIsNotPresent(name)), None)
+
+  def cookieDoesNotEqual(name: String, value: String): Call = 
+    Call(request, operations ++ Seq(CookieDoesNotHaveValue(name, value)), None)
 
   def bodyEquals(text: String): Call = 
     Call(request, operations ++ Seq(BodyShouldEqual(text)), None)
+
+  def bodyDoesNotEqual(text: String): Call = 
+    Call(request, operations ++ Seq(BodyShouldNotEqual(text)), None)
 
   def saveBody(key: String): Call = 
     Call(request, operations ++ Seq(SaveBodyContents(key)), None)

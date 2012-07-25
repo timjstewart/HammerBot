@@ -92,31 +92,45 @@ class Runner(
     reporter.operationStarting(operation)
 
     val result = operation match {
-     case op@StatusCodeEquals(_)      => expectStatusCode(op, response)
-     case op@StatusCodeIsInRange(_,_) => expectStatusCodeInRange(op, response)
+     case op@StatusCodeEquals(_)           => expectStatusCode(op, response)
+     case op@StatusCodeIsInRange(_,_)      => expectStatusCodeInRange(op, response)
 
-     case op@HeaderEquals(_)          => expectHeaderEquals(op, response)
-     case op@ContentTypeEquals(_)     => expectContentTypeEquals(op, response)
-     case op@ContentTypeMatches(_)    => expectContentTypeMatches(op, response)
-     case op@ContentTypeContains(_)   => expectContentTypeContains(op, response)
+     case op@HeaderEquals(_)               => expectHeaderEquals(op, response)
+     case op@ContentTypeEquals(_)          => expectContentTypeEquals(op, response)
+     case op@ContentTypeMatches(_)         => expectContentTypeMatches(op, response)
+     case op@ContentTypeContains(_)        => expectContentTypeContains(op, response)
 
-     case op@CookieIsPresent(_)       => expectCookieIsPresent(op, response)
-     case op@CookieHasValue(_,_)      => expectCookieEquals(op, response)
+     case op@CookieIsPresent(_)            => expectCookieIsPresent(op, response)
+     case op@CookieHasValue(_,_)           => expectCookieEquals(op, response)
 
-     case op@JsonPropertyEquals(_,_)  => expectJsonPropertyEquals(op, response)
-     case op@JsonPropertyMatches(_,_) => expectJsonPropertyMatches(op, response)
+     case op@JsonPropertyEquals(_,_)       => expectJsonPropertyEquals(op, response)
+     case op@JsonPropertyMatches(_,_)      => expectJsonPropertyMatches(op, response)
 
-     case op@BodyShouldContain(_)     => expectBodyContains(op, response)
-     case op@BodyShouldMatch(_)       => expectBodyMatches(op, response)
-     case op@BodyShouldEqual(_)       => expectBodyEquals(op, response)
+     case op@BodyShouldContain(_)          => expectBodyContains(op, response)
+     case op@BodyShouldMatch(_)            => expectBodyMatches(op, response)
+     case op@BodyShouldEqual(_)            => expectBodyEquals(op, response)
 
-     case op@SaveBodyContents(_)      => saveBodyContents(op, response, testConfig)
-     case op@SaveBodyMatch(_,_)       => saveBodyMatch(op, response, testConfig)
-     case op@SaveJsonProperty(_,_)    => saveJsonProperty(op, response, testConfig)
+     case op@SaveBodyContents(_)           => saveBodyContents(op, response, testConfig)
+     case op@SaveBodyMatch(_,_)            => saveBodyMatch(op, response, testConfig)
+     case op@SaveJsonProperty(_,_)         => saveJsonProperty(op, response, testConfig)
 
-     case op@CustomOperationHolder(_) => runCustom(op, response, testConfig)
+     case op@CustomOperationHolder(_)      => runCustom(op, response, testConfig)
 
-     case op                          => Failure("Unknown Operation")
+     case op@StatusCodeDoesNotEqual(_)     => expectStatusCodeDoesNotEqual(op, response)
+     case op@StatusCodeIsNotInRange(_,_)   => expectStatusCodeNotInRange(op, response)
+
+     case op@HeaderDoesNotEqual(_)         => expectHeaderDoesNotEqual(op, response)
+
+     case op@CookieDoesNotHaveValue(_,_)   => expectCookieDoesNotEqual(op, response)
+
+     case op@JsonPropertyDoesNotEqual(_,_) => expectJsonPropertyDoesNotEqual(op, response)
+     case op@JsonPropertyDoesNotMatch(_,_) => expectJsonPropertyDoesNotMatch(op, response)
+
+     case op@BodyShouldNotContain(_)       => expectBodyDoesNotContain(op, response)
+     case op@BodyShouldNotMatch(_)         => expectBodyDoesNotMatch(op, response)
+     case op@BodyShouldNotEqual(_)         => expectBodyDoesNotEqual(op, response)
+
+     case op                               => Failure("Unknown Operation")
     }
 
     result match {

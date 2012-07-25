@@ -27,10 +27,22 @@ object Operations {
       case false => Failure("%s but the body is: [%s].".format(op.description, response.body))
     }
     
+  def expectBodyDoesNotEqual(op: BodyShouldNotEqual, response: Response): Result = 
+    op.value == response.body match {
+      case false => Success()
+      case true => Failure("%s but the body is: [%s].".format(op.description, response.body))
+    }
+    
   def expectBodyMatches(op: BodyShouldMatch, response: Response): Result = 
     op.regularExpression.findFirstIn(response.body) match {
       case Some(_) => Success()
       case None => Failure("%s but no matches were found.".format(op.description))
+    }
+
+  def expectBodyDoesNotMatch(op: BodyShouldNotMatch, response: Response): Result = 
+    op.regularExpression.findFirstIn(response.body) match {
+      case None    => Success()
+      case Some(_) => Failure("%s but no matches were found.".format(op.description))
     }
 
   def expectBodyContains(op: BodyShouldContain, response: Response): Result = 
@@ -38,6 +50,12 @@ object Operations {
       Failure("%s but it was not found.".format(op.description))
     else
       Success()
+
+  def expectBodyDoesNotContain(op: BodyShouldNotContain, response: Response): Result = 
+    if (response.body.indexOf(op.value) == -1)
+      Success()
+    else
+      Failure("%s but it was found.".format(op.description))
 
   def saveJsonProperty(op: SaveJsonProperty, response: Response, testConfig: MutableConfig): Result = 
     findProperty(response, op.propertyPath) match {
@@ -54,6 +72,20 @@ object Operations {
           case Some(value) => op.regularExpression.findFirstIn(value) match {
             case Some(_) => Success()
             case None => Failure("%s but its value is: %s.".format(op.description, value))
+          }
+          case None => Failure("%s but the property was not found.".format(op.description))
+      }
+
+      case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
+    }
+
+  def expectJsonPropertyDoesNotMatch(op: JsonPropertyDoesNotMatch, response: Response): Result = 
+    response.asJson match {
+      case Right(json) => 
+        findProperty(json, op.propertyPath) match {
+          case Some(value) => op.regularExpression.findFirstIn(value) match {
+            case None => Success()
+            case Some(_) => Failure("%s but its value is: %s.".format(op.description, value))
           }
           case None => Failure("%s but the property was not found.".format(op.description))
       }
@@ -84,6 +116,23 @@ object Operations {
       case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
     }
 
+  def expectJsonPropertyDoesNotEqual(op: JsonPropertyDoesNotEqual, response: Response): Result = 
+    response.asJson match {
+      case Right(json) => 
+        findProperty(json, op.propertyPath) match {
+          case Some(value) => value.toString == op.value.toString match {
+            case false => Success()
+            case true => Failure("%s but its value is: %s.".format(op.description, value))
+          }
+          case None => Failure("%s but the property was not found.".format(op.description))
+      }
+
+      case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
+    }
+
+  def expectHeaderDoesNotEqual(op: HeaderDoesNotEqual, response: Response): Result = 
+    expectHeaderDoesNotEqual_(op, response, op.header)
+    
   def expectHeaderEquals(op: HeaderEquals, response: Response): Result = 
     expectHeaderEquals_(op, response, op.header)
     
@@ -92,6 +141,15 @@ object Operations {
       case Some(cookie) => cookie.value == op.value match {
         case true => Success()
         case false => Failure("%s but it was: '%s'".format(op.description, cookie.value))
+      }
+      case None => Failure("%s but was not present".format(op.description))
+    }
+
+  def expectCookieDoesNotEqual(op: CookieDoesNotHaveValue, response: Response): Result = 
+    response.lookupCookie(op.name) match {
+      case Some(cookie) => cookie.value == op.value match {
+        case false => Success()
+        case true => Failure("%s but it was: '%s'".format(op.description, cookie.value))
       }
       case None => Failure("%s but was not present".format(op.description))
     }
@@ -113,6 +171,18 @@ object Operations {
       Success()
     else
       Failure("%s but was: %s".format(op.description, response.statusCode))
+
+ def expectStatusCodeDoesNotEqual(op: StatusCodeDoesNotEqual, response: Response): Result = 
+    if (response.statusCode != op.expected)
+      Success()
+    else
+      Failure("%s but was: %s".format(op.description, response.statusCode))
+
+  def expectStatusCodeNotInRange(op: StatusCodeIsNotInRange, response: Response): Result = 
+    if (response.statusCode >= op.low && response.statusCode <= op.high)
+      Failure("%s but was: %s".format(op.description, response.statusCode))
+    else
+      Success()
 
   def runCustom(op: CustomOperationHolder, response: Response, config: IConfig): Result = op.custom(response, config)
 
@@ -178,6 +248,15 @@ object Operations {
       case Some(actual) => expected.value == actual.value match {
         case true => Success()
         case false => Failure("%s but the value was %s".format(op.description, actual.value))
+      }
+      case None => Failure("%s but the header was not present".format(op.description))
+    }
+
+  private def expectHeaderDoesNotEqual_(op: Operation, response: Response, expected: Header): Result = 
+    response.lookupHeader(expected.name) match {
+      case Some(actual) => expected.value == actual.value match {
+        case false => Success()
+        case true => Failure("%s but the value was %s".format(op.description, actual.value))
       }
       case None => Failure("%s but the header was not present".format(op.description))
     }

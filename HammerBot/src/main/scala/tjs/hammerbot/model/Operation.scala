@@ -13,16 +13,33 @@ case class StatusCodeEquals(
   val expected: Int
 ) extends Expectation("Status Code should be: %d".format(expected))
 
+case class StatusCodeDoesNotEqual(
+  val expected: Int
+) extends Expectation("Status Code should not be: %d".format(expected))
+
 case class StatusCodeIsInRange(
   val low:  Int,
   val high: Int
 ) extends Expectation("Status Code should be between %d and %d".format(low, high))
 
+case class StatusCodeIsNotInRange(
+  val low:  Int,
+  val high: Int
+) extends Expectation("Status Code should not be between %d and %d".format(low, high))
+
 case class HeaderEquals(
   val header: Header
 ) extends Expectation("Response header: '%s' should be: '%s'".format(header.name, header.value))
 
+case class HeaderDoesNotEqual(
+  val header: Header
+) extends Expectation("Response header: '%s' should not be: '%s'".format(header.name, header.value))
+
 case class CookieIsPresent(
+  val name: String
+) extends Expectation("Response should contain cookie with name: '%s'".format(name))
+
+case class CookieIsNotPresent(
   val name: String
 ) extends Expectation("Response should contain cookie with name: '%s'".format(name))
 
@@ -31,17 +48,34 @@ case class CookieHasValue(
   val value: String
 ) extends Expectation("Response should contain cookie with name: '%s' and value: %s".format(name, quote(value)))
 
+case class CookieDoesNotHaveValue(
+  val name:  String,
+  val value: String
+) extends Expectation("Response should not contain cookie with name: '%s' and value: %s".format(name, quote(value)))
+
 case class BodyShouldEqual(
   val value: String
 ) extends Expectation("Response body should be equal to: %s".format(quote(value)))
+
+case class BodyShouldNotEqual(
+  val value: String
+) extends Expectation("Response body should not be equal to: %s".format(quote(value)))
 
 case class BodyShouldContain(
   val value: String
 ) extends Expectation("Response body should contain: '%s'".format(value))
 
+case class BodyShouldNotContain(
+  val value: String
+) extends Expectation("Response body should not contain: '%s'".format(value))
+
 case class BodyShouldMatch(
   val regularExpression: Regex
 ) extends Expectation("Response body should match: %s".format(quote(regularExpression)))
+
+case class BodyShouldNotMatch(
+  val regularExpression: Regex
+) extends Expectation("Response body should not match: %s".format(quote(regularExpression)))
 
 case class SaveBodyContents(
   val key: String
@@ -83,10 +117,20 @@ case class JsonPropertyEquals(
   val value:        Any
 ) extends Expectation("JSON property: %s should equal: %s".format(propertyPath, value))
 
+case class JsonPropertyDoesNotEqual(
+  val propertyPath: String,
+  val value:        Any
+) extends Expectation("JSON property: %s should not equal: %s".format(propertyPath, value))
+
 case class JsonPropertyMatches(
   val propertyPath:      String,
   val regularExpression: Regex
 ) extends Expectation("Response JSON should have property: %s that matches: %s".format(propertyPath, regularExpression))
+
+case class JsonPropertyDoesNotMatch(
+  val propertyPath:      String,
+  val regularExpression: Regex
+) extends Expectation("Response JSON should not have property: %s that matches: %s".format(propertyPath, regularExpression))
 
 case class SaveJsonProperty(
   val propertyPath: String,
