@@ -65,6 +65,26 @@ object Operations {
       case Left(failure) => Failure("Could not save JSON property.  %s".format(failure))
     }
     
+  def expectJsonPropertyExists(op: JsonPropertyExists, response: Response): Result = 
+    response.asJson match {
+      case Right(json) => 
+        findProperty(json, op.propertyPath) match {
+          case Some(_) => Success()
+          case None => Failure("%s but it does not exist.".format(op.description))
+        }
+      case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
+    }
+
+  def expectJsonPropertyDoesNotExist(op: JsonPropertyDoesNotExist, response: Response): Result = 
+    response.asJson match {
+      case Right(json) => 
+        findProperty(json, op.propertyPath) match {
+          case None => Success()
+          case Some(_)=> Failure("%s but it does exist.".format(op.description))
+        }
+      case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
+    }
+
   def expectJsonPropertyMatches(op: JsonPropertyMatches, response: Response): Result = 
     response.asJson match {
       case Right(json) => 

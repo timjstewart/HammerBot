@@ -112,6 +112,14 @@ case class ResponseReceivedWithinMilliseconds(
   val milliseconds: Int
 ) extends Expectation("Response should be received within %d milliseconds.".format(milliseconds))
 
+case class JsonPropertyExists(
+  val propertyPath: String
+) extends Expectation("JSON property: %s should exist".format(propertyPath))
+
+case class JsonPropertyDoesNotExist(
+  val propertyPath: String
+) extends Expectation("JSON property: %s should not exist".format(propertyPath))
+
 case class JsonPropertyEquals(
   val propertyPath: String,
   val value:        Any

@@ -20,6 +20,8 @@ object Blogs {
         .statusCodeEquals(200)
         .contentTypeContains("application/json")
         .jsonPropertyEquals("blogs/count", 120)
+        .jsonPropertyExists("blogs/count")
+        .jsonPropertyDoesNotExist("blogs/version")
         .jsonPropertyDoesNotEqual("blogs/count", 121)
       },
 

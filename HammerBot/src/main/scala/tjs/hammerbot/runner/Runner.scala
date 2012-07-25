@@ -103,6 +103,8 @@ class Runner(
      case op@CookieIsPresent(_)            => expectCookieIsPresent(op, response)
      case op@CookieHasValue(_,_)           => expectCookieEquals(op, response)
 
+     case op@JsonPropertyExists(_)         => expectJsonPropertyExists(op, response)
+     case op@JsonPropertyDoesNotExist(_)   => expectJsonPropertyDoesNotExist(op, response)
      case op@JsonPropertyEquals(_,_)       => expectJsonPropertyEquals(op, response)
      case op@JsonPropertyMatches(_,_)      => expectJsonPropertyMatches(op, response)
 

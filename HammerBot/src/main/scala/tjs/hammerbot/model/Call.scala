@@ -46,6 +46,12 @@ case class Call(
   def jsonPropertyEquals(path: String, value: Any): Call = 
     Call(request, operations ++ Seq(JsonPropertyEquals(path, value)), None)
 
+  def jsonPropertyExists(path: String): Call = 
+    Call(request, operations ++ Seq(JsonPropertyExists(path)), None)
+
+  def jsonPropertyDoesNotExist(path: String): Call = 
+    Call(request, operations ++ Seq(JsonPropertyDoesNotExist(path)), None)
+
   def jsonPropertyDoesNotEqual(path: String, value: Any): Call = 
     Call(request, operations ++ Seq(JsonPropertyDoesNotEqual(path, value)), None)
 
