@@ -2,11 +2,20 @@ package tjs.hammerbot.model
 
 import scala.util.matching.Regex
 
+/** A Call to an HTTP Server along with any operations that should be 
+  * applied to the response to that call.
+  *
+  * @param request the Request to be made to the HTTP server.
+  * @param operations the Operations to be performed on the Response to the Request.
+  * @param timeOut the number of milliseconds the Request is allowed to take 
+  * before it is considered a timed-out request.
+  */
 case class Call(
   val request:    Request,
   val operations: Seq[Operation],
   val timeOut:    Option[Int]
 ) {
+  /** Create a Call that has no operations and no time-out */
   def this(request: Request) = this(request, Seq(), None)
 
   // Methods that modify the Call

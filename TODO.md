@@ -15,3 +15,4 @@
   * Tree/Branch/Suite/etc. - I chose Suite/SuiteGroup/TestGroup
  * Clean up Runner.scala
  * Allow custom Operation
+ * Add converse expectations
