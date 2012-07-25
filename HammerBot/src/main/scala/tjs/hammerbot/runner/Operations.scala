@@ -75,43 +75,43 @@ object Operations {
       case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
     }
 
-  def expectJsonPropertyDoesNotExist(op: JsonPropertyDoesNotExist, response: Response): Result = 
+  private def findJsonProperty(response: Response, propertyPath: String): Either[String, Option[String]] = 
     response.asJson match {
       case Right(json) => 
-        findProperty(json, op.propertyPath) match {
-          case None => Success()
-          case Some(_)=> Failure("%s but it does exist.".format(op.description))
+        findProperty(json, propertyPath) match {
+          case None => Right(None) 
+          case Some(value)=> Right(Some(value))
         }
-      case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
+      case Left(error) => Left("The response body could not be parsed as JSON.  (%s)".format(error))
+    }
+
+  def expectJsonPropertyDoesNotExist(op: JsonPropertyDoesNotExist, response: Response): Result = 
+    findJsonProperty(response, op.propertyPath) match {
+      case Left(error) => Failure(error)
+      case Right(None) => Success()
+      case Right(Some(value)) => Failure("%s but it exists.".format(op.description))
     }
 
   def expectJsonPropertyMatches(op: JsonPropertyMatches, response: Response): Result = 
-    response.asJson match {
-      case Right(json) => 
-        findProperty(json, op.propertyPath) match {
-          case Some(value) => op.regularExpression.findFirstIn(value) match {
-            case Some(_) => Success()
-            case None => Failure("%s but its value is: %s.".format(op.description, value))
-          }
-          case None => Failure("%s but the property was not found.".format(op.description))
+    findJsonProperty(response, op.propertyPath) match {
+      case Left(error) => Failure(error)
+      case Right(None) => Failure("%s but it was not found".format(op.description))
+      case Right(Some(value)) => op.regularExpression.findFirstIn(value) match {
+        case Some(_) => Success()
+        case None => Failure("%s but its value is: %s.".format(op.description, value))
       }
-
-      case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
     }
 
   def expectJsonPropertyDoesNotMatch(op: JsonPropertyDoesNotMatch, response: Response): Result = 
-    response.asJson match {
-      case Right(json) => 
-        findProperty(json, op.propertyPath) match {
-          case Some(value) => op.regularExpression.findFirstIn(value) match {
-            case None => Success()
-            case Some(_) => Failure("%s but its value is: %s.".format(op.description, value))
-          }
-          case None => Failure("%s but the property was not found.".format(op.description))
+    findJsonProperty(response, op.propertyPath) match {
+      case Left(error) => Failure(error)
+      case Right(None) => Failure("%s but it was not found".format(op.description))
+      case Right(Some(value)) => op.regularExpression.findFirstIn(value) match {
+        case None => Success()
+        case Some(m) => Failure("%s but its matched: %s.".format(op.description, m))
       }
-
-      case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
     }
+
 
   def expectContentTypeContains(op: ContentTypeContains, response: Response): Result = 
     expectHeaderContains_(op, response, "Content-Type", op.contentType)
@@ -123,31 +123,23 @@ object Operations {
     expectHeaderEquals_(op, response, Header("Content-Type", op.contentType))
 
   def expectJsonPropertyEquals(op: JsonPropertyEquals, response: Response): Result = 
-    response.asJson match {
-      case Right(json) => 
-        findProperty(json, op.propertyPath) match {
-          case Some(value) => value.toString == op.value.toString match {
-            case true => Success()
-            case false => Failure("%s but its value is: %s.".format(op.description, value))
-          }
-          case None => Failure("%s but the property was not found.".format(op.description))
+    findJsonProperty(response, op.propertyPath) match {
+      case Left(error) => Failure(error)
+      case Right(None) => Failure("%s but it was not found".format(op.description))
+      case Right(Some(value)) => op.value.toString == value match {
+        case true => Success()
+        case false => Failure("%s but its value is: %s.".format(op.description, value))
       }
-
-      case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
     }
 
   def expectJsonPropertyDoesNotEqual(op: JsonPropertyDoesNotEqual, response: Response): Result = 
-    response.asJson match {
-      case Right(json) => 
-        findProperty(json, op.propertyPath) match {
-          case Some(value) => value.toString == op.value.toString match {
-            case false => Success()
-            case true => Failure("%s but its value is: %s.".format(op.description, value))
-          }
-          case None => Failure("%s but the property was not found.".format(op.description))
+    findJsonProperty(response, op.propertyPath) match {
+      case Left(error) => Failure(error)
+      case Right(None) => Failure("%s but it was not found".format(op.description))
+      case Right(Some(value)) => op.value.toString != value match {
+        case true => Success()
+        case false => Failure("%s but its value is: %s.".format(op.description, value))
       }
-
-      case Left(error) => Failure("%s but the response body could not be parsed as JSON.  (%s)".format(op.description, error))
     }
 
   def expectHeaderDoesNotEqual(op: HeaderDoesNotEqual, response: Response): Result = 
