@@ -150,6 +150,19 @@ can be used by multiple suites:
 
         val allConf = confA + confB
 
+### Set Up and Tear Down ###
+
+        suite("My Test Suite",
+
+          setUp(
+            get("http://myservice.mycompany.com/createUser")),
+          
+          tearDown(
+            get("http://myservice.mycompany.com/deleteUser")),
+
+          test("Test One",
+            get("http://myservice.mycompany.com/users")))
+
 ### Running Suites ###
 
 * Here is an example main method belonging to a Main object:

@@ -31,7 +31,7 @@ object Blogs extends Controller {
   }
 
   def setUp = Action {
-    Status(201)
+    Ok("{ blog_id: 10101 }").as(JSON)
   }
   
   def tearDown = Action {

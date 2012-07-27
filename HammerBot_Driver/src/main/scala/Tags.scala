@@ -20,21 +20,24 @@ object Tags {
 
     setUp(
       post("http://${blogHost}/blogs/setUp")
-        .statusCodeEquals(201),
+        .statusCodeEquals(200)
+        .saveJsonProperty("blog_id", "blog_id"),
       post("http://${blogHost}/blogs/setUp")
-        .statusCodeEquals(201)),
+        .statusCodeEquals(200)),
+
 
     tearDown(
-      post("http://${blogHost}/blogs/tearDown"),
+      post("http://${blogHost}/blogs/tearDown?id=${blog_id}"),
       post("http://${blogHost}/blogs/tearDown")),
 
-    // test("Google Test",
-    //   get("https://mail.google.com/mail")
-    //    .timeOut(3000)
-    //    .headerEquals("Pragma", "no-cache")
-    //    .headerDoesNotEqual("Pragma", "cache")
-    //    .bodyDoesNotContain("HotMail")
-    //    .bodyContains("SetGmailCookie")), 
+
+    test("Google Test",
+      get("https://mail.google.com/mail")
+        .timeOut(3000)
+        .headerEquals("Pragma", "no-cache")
+        .headerDoesNotEqual("Pragma", "cache")
+        .bodyDoesNotContain("HotMail")
+        .bodyContains("SetGmailCookie")), 
 
 
     test("Delay Test",
