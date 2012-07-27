@@ -2,6 +2,8 @@
 
 ## Pending ##
 
+ * Make TAP reporter print out comments for starting/ending suites/tests, etc.
+ * Hook TAP reporter into the CommandLineProcessor
  * Comments
  * Select suite from command line
  * Sbt task to generate distribution

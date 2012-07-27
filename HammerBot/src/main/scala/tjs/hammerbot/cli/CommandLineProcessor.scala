@@ -4,6 +4,7 @@ import tjs.hammerbot.model._
 import tjs.hammerbot.runner._
 import tjs.hammerbot.reporters._
 
+/** Runs different commands basded on the provided arguments */
 object CommandLineProcessor {
   def run(args: Array[String], suite: Suite, config: IConfig): Unit = {
     Arguments.parse(args) match {

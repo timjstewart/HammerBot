@@ -1,7 +1,12 @@
 package tjs.hammerbot.cli
 
+/** Parse command line arguments into an Arguments object.  
+  *
+  * Used by the CommandLineProcessor 
+  */
 object Arguments {
 
+  /** parse the command line and return either an error or an Arguments object. */
   def parse(args: Array[String]): Either[String, Arguments] = 
     parseCommand(args.toList, Arguments.empty)
 
@@ -58,13 +63,24 @@ object Arguments {
   private def empty = Arguments("help", false, List())
 }
 
+/** Arguments recognized by the CommandLineProcessor.
+  *
+  * @param command the command to run (e.g. run, print, help)
+  * @param debug whether or not to run in debug mode
+  * @param a list of test/suite names to operate on
+  */
 case class Arguments(
   val command: String,
   val debug:   Boolean,
   val names:   List[String]
 ) {
+  /** turn on debug mode */
   def withDebug = Arguments(command, true, names)
+
+  /** set the command to be run */
   def withCommand(command: String) = Arguments(command, debug, names)
+
+  /** add a test/suite name to the list of tests/suites to operate on */
   def withName(name: String) = Arguments(command, debug, names ::: List(name))
 }
 

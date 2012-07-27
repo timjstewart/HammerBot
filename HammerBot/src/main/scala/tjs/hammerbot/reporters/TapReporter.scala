@@ -2,6 +2,7 @@ package tjs.hammerbot.reporters
 
 import tjs.hammerbot.model._
 
+/** Reporter that logs using the TAP format */
 class TapReporter() extends Reporter {
 
   var testNumber: Int = 0
@@ -33,10 +34,16 @@ class TapReporter() extends Reporter {
 
   override def operationsComplete(): Unit = Unit
 
-  override def testSetUpStarting(testName: String): Unit = Unit
-  override def testSetUpComplete(testName: String, succeeded: Boolean): Unit = Unit
+  override def testSetUpStarting(testName: String): Unit = 
+    println("# Test SetUp: %s".format(testName))
 
-  override def testTearDownStarting(testName: String): Unit = Unit
-  override def testTearDownComplete(testName: String, succeeded: Boolean): Unit = Unit
+  override def testSetUpComplete(testName: String, succeeded: Boolean): Unit =
+    println("# Test SetUp Complete: %s".format(testName))
+
+  override def testTearDownStarting(testName: String): Unit = 
+    println("# Test TearDown: %s".format(testName))
+
+  override def testTearDownComplete(testName: String, succeeded: Boolean): Unit = 
+    println("# Test TearDown Complete: %s".format(testName))
  
 }

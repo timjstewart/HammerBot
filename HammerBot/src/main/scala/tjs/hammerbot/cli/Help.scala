@@ -1,5 +1,6 @@
 package tjs.hammerbot.cli
 
+/** Prints out the usage/help for the CommandLineProcessor */
 class Help() {
   def printHelp(): Unit = {
     println("usage: <program> COMMAND [FLAGS] [NAME ...]")

@@ -29,31 +29,36 @@ private object TearDownResult {
   val empty = TearDownResult(Seq())
 }
 
+/** Runs a collection of Tests or Suites.
+  *
+  * Progress of the execution is reported via the [[tjs.hammerbot.reporters.Reporter]] trait.
+  */
 class Runner(
   globals:  IConfig,
   reporter: Reporter = new ConsoleReporter()
 ) {
 
+  /** Run a collection of Suites/Tests */
   def run(tree: Suite): Seq[Result] = tree match {
     case sg:SuiteGroup => runSuiteGroup(sg)
     case tg:TestGroup => runTestGroup(tg)
   }
 
-  def runTestGroup(testGroup: TestGroup): Seq[Result] ={
+  private def runTestGroup(testGroup: TestGroup): Seq[Result] ={
     reporter.suiteStarting(testGroup.name)
     val results = testGroup.tests.flatMap(test => runTest(test, testGroup))
     reporter.suiteComplete(testGroup.name)
     results
   }
 
-  def runSuiteGroup(suiteGroup: SuiteGroup): Seq[Result] = {
+  private def runSuiteGroup(suiteGroup: SuiteGroup): Seq[Result] = {
     reporter.suiteStarting(suiteGroup.name)
     val result = suiteGroup.suites.flatMap(run)
     reporter.suiteComplete(suiteGroup.name)
     result
   }
 
-  def runTest(test: Test, testGroup: TestGroup): Seq[Result] = {
+  private def runTest(test: Test, testGroup: TestGroup): Seq[Result] = {
     reporter.testStarting(test.name)
 
     val setUpResult: SetUpResult = runSetUp(test, testGroup)

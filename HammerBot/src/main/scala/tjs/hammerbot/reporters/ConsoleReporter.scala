@@ -4,6 +4,8 @@ import tjs.hammerbot.model._
 import tjs.hammerbot.utils._
 
 object ConsoleReporter {
+
+  /** Parameters that control what is printed and how. */
   class Parameters(
     val printOperations:  Boolean,
     val printRequests:    Boolean,
@@ -16,6 +18,12 @@ object ConsoleReporter {
   val debug   = new Parameters(true, true, true, true)
 }
 
+/** Reports on test execution to the Console.
+  * 
+  * The report content changes if the output is redirected.
+  *
+  * @param parameters specify what should be printed and how.
+  */
 class ConsoleReporter(
   parameters: ConsoleReporter.Parameters = ConsoleReporter.default
 ) extends Reporter {
