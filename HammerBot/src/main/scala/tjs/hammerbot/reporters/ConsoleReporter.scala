@@ -45,7 +45,7 @@ class ConsoleReporter(
   }
 
   override def requestSending(request: Request): Unit = {
-    writer.print("Send: %s %s".format(request.method, request.uri))
+    writer.print("Request: %s %s".format(request.method, request.uri))
     expectationsFailed = false
   }
 
@@ -67,7 +67,7 @@ class ConsoleReporter(
   }
 
   override def responseReceived(request: Request, response: Response, config: IConfig, elapsedMillis: Int): Unit = {
-    rewriteLine("Complete", "%s %s".format(request.method, request.uri), elapsedMillis)
+    rewriteLine("Received", "%s %s".format(request.method, request.uri), response.statusCode, elapsedMillis)
     lastRequest = request
     lastResponse = response
     writer.indent {
@@ -166,14 +166,24 @@ class ConsoleReporter(
       Console.println("... %s".format(status))
   }
 
-  private def rewriteLine(status: String, text: String, elapsed: Int): Unit = writer.stdinRedirected match {
-    case false =>
+  private def rewriteLine(status: String, text: String, elapsed: Int): Unit = writer.stdinRedirected match { case false =>
       writer.print("\r")
       writer.println("%s: %s (%d msecs)".format(status, text, elapsed))
 
     case true =>
       Console.println("... %s (%d msecs)".format(status, elapsed))
   }
+
+  private def rewriteLine(status: String, text: String, statusCode: Int, elapsed: Int): Unit = 
+    writer.stdinRedirected match { 
+      case false =>
+        writer.print("\r")
+        writer.println("%s: %s %d (%d msecs)".format(status, text, statusCode, elapsed))
+
+      case true =>
+        Console.println("... %s %d (%d msecs)".format(status, statusCode, elapsed))
+  }
+
 
   private def dumpConfig(config: IConfig): Unit = {
     writer.println("Configuration:")

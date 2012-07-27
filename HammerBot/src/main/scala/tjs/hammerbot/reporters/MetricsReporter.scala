@@ -58,14 +58,15 @@ class MetricsReporter(
     val totalCalls: Int = callsSucceeded + callsFailed + callsSkipped 
     val totalTests: Int = testsPassed + testsFailed
 
-    ("\nResults: %s\n" +
+    ("Metrics:\n" +
      "  Operations - total: %3d, succeeded: %3d, failed: %3d,  skipped: %3d\n" + 
      "  Calls      - total: %3d, succeeded: %3d, failed: %3d,  skipped: %3d\n" +
-     "  Tests      - total: %3d, succeeded: %3d, failed: %3d").format(
-      getTestResultString(),
+     "  Tests      - total: %3d, succeeded: %3d, failed: %3d\n\n" +
+     "Result: %s").format(
       totalOperations, operationsSucceeded, operationsFailed, operationsSkipped, 
       totalCalls, callsSucceeded, callsFailed, callsSkipped, 
-      totalTests, testsPassed, testsFailed)
+      totalTests, testsPassed, testsFailed,
+      getTestResultString())
   }
 
   private def getTestResultString(): String = 
@@ -76,7 +77,6 @@ class MetricsReporter(
 
   override def testSetUpStarting(testName: String): Unit = Unit
   override def testSetUpComplete(testName: String, succeeded: Boolean): Unit = Unit
-
   override def testTearDownStarting(testName: String): Unit = Unit
   override def testTearDownComplete(testName: String, succeeded: Boolean): Unit = Unit
  

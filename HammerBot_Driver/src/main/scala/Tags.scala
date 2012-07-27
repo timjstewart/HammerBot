@@ -5,16 +5,16 @@ import tjs.hammerbot.model._
 
 object Tags {
 
-
   case class HeaderCountEquals(n: Int) extends CustomOperation {
     def description = "Header Count should equal: %d".format(n)
     def apply(response: Response, config: IConfig): Result = {
-      if (response.headers.length == n)
-        Success()
-      else 
-        Failure("%s but it was %d.".format(description, response.headers.length))
+      response.headers.length == n match {
+        case true => Success()
+        case _ => Failure("%s but it was %d.".format(description, response.headers.length))
+      }
     }
   }
+
 
   def getSuite() = suite("Tags Tests", 
 
@@ -31,13 +31,13 @@ object Tags {
       post("http://${blogHost}/blogs/tearDown")),
 
 
-    test("Google Test",
-      get("https://mail.google.com/mail")
-        .timeOut(3000)
-        .headerEquals("Pragma", "no-cache")
-        .headerDoesNotEqual("Pragma", "cache")
-        .bodyDoesNotContain("HotMail")
-        .bodyContains("SetGmailCookie")), 
+    // test("Google Test",
+    //   get("https://mail.google.com/mail")
+    //     .timeOut(3000)
+    //     .headerEquals("Pragma", "no-cache")
+    //     .headerDoesNotEqual("Pragma", "cache")
+    //     .bodyDoesNotContain("HotMail")
+    //     .bodyContains("SetGmailCookie")), 
 
 
     test("Delay Test",
@@ -61,7 +61,7 @@ object Tags {
         .contentTypeContains("application/json")
         .statusCodeEquals(200))
 
-    )
+  )
 }
 
 

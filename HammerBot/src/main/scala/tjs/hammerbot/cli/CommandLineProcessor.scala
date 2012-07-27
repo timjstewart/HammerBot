@@ -37,6 +37,7 @@ object CommandLineProcessor {
     val reporter = new CompositeReporter(metrics, console)
     val runner = new Runner(config, reporter)
     runner.run(suite)
+    println
     println(metrics.toString)
   }
 

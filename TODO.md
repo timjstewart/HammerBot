@@ -3,7 +3,13 @@
 ## Pending ##
 
  * Comments
- * Handle cookies
+ * Select suite from command line
+ * Sbt task to generate distribution
+
+## Some Day, Maybe ##
+
+ * Handle cookies (low priority because HammerBot is targetet at service
+   testing.
 
 ## Done ##
 
