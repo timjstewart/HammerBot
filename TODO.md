@@ -3,7 +3,6 @@
 ## Pending ##
 
  * Make TAP reporter print out comments for starting/ending suites/tests, etc.
- * Hook TAP reporter into the CommandLineProcessor
  * Comments
  * Select suite from command line
  * Sbt task to generate distribution
@@ -15,6 +14,7 @@
 
 ## Done ##
 
+ * Hook TAP reporter into the CommandLineProcessor
  * Make sure SSL requests work
  * Break out Console related operations out of ConsoleRunner.scala
  * Find better name for project: HammerBot!

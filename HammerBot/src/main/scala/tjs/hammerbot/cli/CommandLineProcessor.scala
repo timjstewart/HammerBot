@@ -15,6 +15,7 @@ object CommandLineProcessor {
 
   private def run(args: Arguments, suite: Suite, config: IConfig = Config.empty): Unit = args.command match {
     case "run"     => runCommand(args, suite, config)
+    case "tap"     => tapCommand(suite, config)
     case "print"   => printCommand(args, suite)
     case "version" => versionCommand()
     case _         => printHelp()
@@ -40,6 +41,12 @@ object CommandLineProcessor {
     runner.run(suite)
     println
     println(metrics.toString)
+  }
+
+  private def tapCommand(suite: Suite, config: IConfig): Unit = {
+    val reporter = new TapReporter()
+    val runner = new Runner(config, reporter)
+    runner.run(suite)
   }
 
   private def getReporter(args: Arguments): Reporter = {
