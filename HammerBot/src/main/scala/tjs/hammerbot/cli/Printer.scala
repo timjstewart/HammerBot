@@ -19,8 +19,8 @@ class Printer(
     */
   def print(suite: Suite): Unit = {
     suite match {
-      case s@SuiteGroup(_,_) => printSuiteGroup(s)
-      case t@TestGroup(_,_,_) => printTestGroup(t)
+      case s:SuiteGroup => printSuiteGroup(s)
+      case t:TestGroup => printTestGroup(t)
     }
   }
 

@@ -73,4 +73,11 @@ class MetricsReporter(
       "FAILED"
     else
       "PASSED"
+
+  override def testSetUpStarting(testName: String): Unit = Unit
+  override def testSetUpComplete(testName: String, succeeded: Boolean): Unit = Unit
+
+  override def testTearDownStarting(testName: String): Unit = Unit
+  override def testTearDownComplete(testName: String, succeeded: Boolean): Unit = Unit
+ 
 }

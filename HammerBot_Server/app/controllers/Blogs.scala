@@ -29,4 +29,13 @@ object Blogs extends Controller {
     Thread.sleep(500)
     Ok("{ }").as(JSON)
   }
+
+  def setUp = Action {
+    Status(201)
+  }
+  
+  def tearDown = Action {
+    Status(201)
+  }
+  
 }

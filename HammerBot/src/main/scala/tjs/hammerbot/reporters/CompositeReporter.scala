@@ -44,4 +44,16 @@ case class CompositeReporter(
   def operationsComplete(): Unit = 
     reporters.foreach(r => r.operationsComplete())
 
+  def testSetUpStarting(testName: String): Unit = 
+    reporters.foreach(r => r.testSetUpStarting(testName))
+
+  def testSetUpComplete(testName: String, succeeded: Boolean): Unit =
+    reporters.foreach(r => r.testSetUpComplete(testName, succeeded))
+
+  def testTearDownStarting(testName: String): Unit =
+    reporters.foreach(r => r.testTearDownStarting(testName))
+    
+  def testTearDownComplete(testName: String, succeeded: Boolean): Unit =
+    reporters.foreach(r => r.testTearDownComplete(testName, succeeded))
+ 
 }

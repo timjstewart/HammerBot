@@ -30,7 +30,14 @@ case class SuiteGroup(
 case class TestGroup(
   override val name: String,
   val suiteConfig:   Config,
-  tests:             Seq[Test]) extends Suite(name)
+  tests:             Seq[Test],
+  val setUp:         Option[TestSetUp],
+  val tearDown:      Option[TestTearDown]
+) extends Suite(name)
+
+trait HasCalls {
+  def calls: Seq[Call]
+}
 
 /** A Test which is comprised of a collection of Calls to be made to one or
   * more servers.
@@ -40,7 +47,13 @@ case class TestGroup(
   */
 case class Test(
   val name:  String,
-  val calls: Seq[Call])
+  val calls: Seq[Call]) extends HasCalls
+
+case class TestSetUp(
+  val calls: Seq[Call]) extends HasCalls
+
+case class TestTearDown(
+  val calls: Seq[Call]) extends HasCalls
 
 /** A trait that can be mixed in to any object that has a collection of
   * Headers.

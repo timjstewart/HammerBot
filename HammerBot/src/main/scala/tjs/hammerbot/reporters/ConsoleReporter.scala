@@ -85,6 +85,7 @@ class ConsoleReporter(
 
   override def operationStarting(operation: Operation): Unit = {
     if (parameters.printOperations) {
+      writer.indent()
       writer.print("%s: %s".format(writer.yellow("Test"), operation.description))
     }
   }
@@ -92,12 +93,14 @@ class ConsoleReporter(
   override def operationSucceeded(operation: Operation): Unit = {
     if (parameters.printOperations) {
       rewriteLine(writer.green("Pass"), operation.description)
+      writer.dedent()
     }
   }
 
   override def operationFailed(operation: Operation, message: String): Unit = {
     if (parameters.printOperations) {
       rewriteLine(writer.red("FAIL"), message)
+      writer.dedent()
     }
     expectationsFailed = true
   }
@@ -213,4 +216,25 @@ class ConsoleReporter(
       }
     }
   }
+
+  override def testSetUpStarting(testName: String): Unit = { 
+    writer.println("SetUp:")
+    writer.indent()
+  }
+
+  override def testSetUpComplete(testName: String, succeeded: Boolean): Unit = {
+    writer.dedent()
+    writer.println("SetUp Complete")
+  }
+
+  override def testTearDownStarting(testName: String): Unit = {
+    writer.println("Tear Down:")
+    writer.indent()
+  }
+
+  override def testTearDownComplete(testName: String, succeeded: Boolean): Unit = {
+    writer.dedent()
+    writer.println("Tear Down Complete")
+  }
+ 
 }

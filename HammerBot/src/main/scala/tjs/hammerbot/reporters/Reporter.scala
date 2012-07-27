@@ -9,6 +9,12 @@ trait Reporter {
   def testStarting(testName: String): Unit
   def testComplete(testName: String, succeeded: Boolean): Unit
 
+  def testSetUpStarting(testName: String): Unit
+  def testSetUpComplete(testName: String, succeeded: Boolean): Unit
+
+  def testTearDownStarting(testName: String): Unit
+  def testTearDownComplete(testName: String, succeeded: Boolean): Unit
+
   def requestSending(request: Request): Unit
   def requestNotSent(request: Request, reason: String, config: IConfig): Unit
   def requestFailed(request: Request, reason: String, elapsedMillis: Int): Unit
