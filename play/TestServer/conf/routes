@@ -1,3 +1,6 @@
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file                    controllers.Assets.at(path="/public", file)
+
 GET     /blogs                           controllers.Blogs.getAll
 GET     /blogs/delay                     controllers.Blogs.delay
 GET     /blogs/:id                       controllers.Blogs.get(id: Int)
@@ -8,4 +11,7 @@ POST    /blogs/setUp                     controllers.Blogs.setUp()
 POST    /blogs/tearDown                  controllers.Blogs.tearDown()
 
 GET     /users/:id                       controllers.Users.get(id: Int)
+
+
+
 

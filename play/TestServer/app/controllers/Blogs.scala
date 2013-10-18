@@ -6,11 +6,11 @@ import play.api.mvc._
 object Blogs extends Controller {
   
   def put(id: Int) = Action {
-    Ok("""{ blog: { id: %s, user_id: 20902 } }""".format(id)).as(JSON)
+    Ok("""{ "blog": { "id": %s, "user_id": 20902 } }""".format(id)).as(JSON)
   }
   
   def get(id: Int) = Action {
-    Ok("""{ blog: { id: %s, user_id: 20902 } }""".format(id)).as(JSON)
+    Ok("""{ "blog": { "id": %s, "user_id": 20902 } }""".format(id)).as(JSON)
   }
   
   def post = Action {
@@ -18,11 +18,11 @@ object Blogs extends Controller {
   }
   
   def getAll = Action {
-    Ok("""{ blogs: { count: 120 } }""").as(JSON)
+    Ok("""{ "blogs": { "count": 120 } }""").as(JSON)
   }
   
   def delete(id: Int) = Action {
-    Ok("""{ blogs: { count: 120 } }""").as(JSON)
+    Ok("""{ "blogs": { "count": 120 } }""").as(JSON)
   }
   
   def delay() = Action {
@@ -31,7 +31,7 @@ object Blogs extends Controller {
   }
 
   def setUp = Action {
-    Ok("{ blog_id: 10101 }").as(JSON)
+    Ok("""{ "blog_id": 10101 }""").as(JSON)
   }
   
   def tearDown = Action {

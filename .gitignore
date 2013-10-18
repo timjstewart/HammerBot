@@ -1,4 +1,5 @@
 target/
-project/
+logs/
 *.swp
 *.swo
+play/TestServer/project/
