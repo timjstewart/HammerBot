@@ -2,7 +2,7 @@
 
 An HTTP/HTTPS service testing framework.
 
-*Hammer - verb. to work at constantly, to quesiton in a relentless
+*Hammer - verb. to work at constantly, to question in a relentless
 manner.*
 
 ## Examples ##
